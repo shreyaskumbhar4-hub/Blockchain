@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 6: Public vs. Private Blockchain Architecture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="network-compare-page">
+  <div class="app-container">
+    <!-- Navigation Bar -->
+    <nav class="site-nav">
+      <div class="nav-brand">
+        <span class="pulse-dot"></span>
+        <span class="brand-title">BLOCKCHAIN LAB</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="topic1-intervention-simulation.html" class="nav-link">Topic 1: Intervention Simulator</a>
+        <a href="topic2-chain-integrity.html" class="nav-link">Topic 2: Chain Linkage & Tampering</a>
+        <a href="topic3-architectural-guide.html" class="nav-link">Topic 3: Architectural Reference</a>
+        <a href="topic4-avalanche-effect.html" class="nav-link">Topic 4: Avalanche Effect Lab</a>
+        <a href="topic5-asymmetric-cryptography.html" class="nav-link">Topic 5: Asymmetric Keys & Signing</a>
+        <a href="topic6-public-vs-private.html" class="nav-link active">Topic 6: Public vs Private Chains</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-badge">
+          <span class="pulse-dot"></span>
+          <span>TOPIC 06: ENTERPRISE VS PERMISSIONLESS TOPOLOGY</span>
+        </div>
+        <h1>Public vs. Private Blockchain Architecture</h1>
+        <p class="subtitle">Interactive simulation modeling Global Broadcast (Sybil Attack) vs. Permissioned Gatekeeper (Blocked Intrusions)</p>
+      </div>
+      <div class="header-controls">
+        <a href="topic5-asymmetric-cryptography.html" class="btn btn-outline">← Back to Topic 5</a>
+        <a href="topic3-architectural-guide.html" class="btn btn-primary">Reference Guide →</a>
+      </div>
+    </header>
+
+    <!-- Simulation Panel (Matching User Screenshots 1, 2, 3) -->
+    <section class="sim-panel full-width-panel enterprise-stage-panel">
+      <!-- Top Stage Banner & Legend -->
+      <div class="stage-banner-header">
+        <div class="topology-badge" id="topologyBadge">Global Broadcast Architecture</div>
+        <div class="network-legend">
+          <span class="leg-item"><span class="leg-dot blue-dot"></span> Public Node (Open)</span>
+          <span class="leg-item"><span class="leg-dot green-dot"></span> Private Enterprise Node</span>
+          <span class="leg-item"><span class="leg-dot red-dot"></span> Malicious / Sybil Vector</span>
+        </div>
+        <button class="stage-play-btn" id="stagePlayBtn" title="Play / Pause Animation">
+          <svg id="playIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+      </div>
+
+      <!-- Canvas Stage -->
+      <div class="enterprise-canvas-stage">
+        <canvas id="networkStageCanvas" width="960" height="460"></canvas>
+      </div>
+
+      <!-- Telemetry Strip (Matching Screenshots) -->
+      <div class="telemetry-metrics-bar">
+        <div class="tele-col">
+          <span class="tele-sub">Simulated Blocks</span>
+          <span class="tele-val text-white" id="statSimBlocks">69 txs</span>
+        </div>
+        <div class="tele-col">
+          <span class="tele-sub">Consensus Speed</span>
+          <span class="tele-val text-white" id="statConsensusSpeed">8.4s</span>
+        </div>
+        <div class="tele-col">
+          <span class="tele-sub">Security Level</span>
+          <span class="tele-val text-white" id="statSecurityLevel">72%</span>
+        </div>
+      </div>
+
+      <!-- Controls Dashboard (Matching Screenshots 1, 2, 3) -->
+      <div class="network-controls-dashboard">
+        <!-- 1. Network Type Pill Toggle -->
+        <div class="control-box">
+          <label>Network Type</label>
+          <div class="network-type-toggle">
+            <button class="type-pill active" id="btnTypePublic">Public (O...</button>
+            <button class="type-pill" id="btnTypePrivate">Private (...</button>
+          </div>
+        </div>
+
+        <!-- 2. Network Size Slider -->
+        <div class="control-box">
+          <div class="slider-label-row">
+            <label for="networkSizeSlider">Network Size</label>
+            <span class="slider-readout" id="lblNetworkSize">6 Nodes</span>
+          </div>
+          <input type="range" id="networkSizeSlider" min="4" max="10" value="6" class="range-slider">
+        </div>
+
+        <!-- 3. Attack Scenario Dropdown -->
+        <div class="control-box">
+          <label for="attackScenarioSelect">Attack Scenario Simulation</label>
+          <select id="attackScenarioSelect" class="form-control select-dark">
+            <option value="sybil">Sybil Attack</option>
+            <option value="intrusion">Blocked Intrusion (Gatekeeper)</option>
+            <option value="normal">Normal Broadcast</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Structural Comparison & Educational Matrix -->
+    <section class="educational-section">
+      <div class="section-title">
+        <h2>Structural Comparison: Permissionless vs. Enterprise Ledgers</h2>
+        <p>The architectural trade-offs between open decentralized systems and corporate consortiums</p>
+      </div>
+
+      <div class="matrix-table-wrap">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Functional Layer</th>
+              <th class="col-cent">Public Blockchain (e.g., Bitcoin / Ethereum)</th>
+              <th class="col-dec">Private Blockchain (e.g., Hyperledger Fabric)</th>
+              <th>Architectural Priority</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Access Control</strong></td>
+              <td><span class="tag tag-success">Permissionless</span> — Open to all global participants without approval</td>
+              <td><span class="tag tag-danger">Permissioned</span> — Invite-only via Certificate Authority (CA)</td>
+              <td>Open Democracy vs Corporate Gatekeeper</td>
+            </tr>
+            <tr>
+              <td><strong>Transaction Privacy</strong></td>
+              <td>Completely transparent, pseudonymous, globally readable ledger</td>
+              <td>Confidential, encrypted channels visible only to vetted partners</td>
+              <td>Radical Transparency vs Enterprise IP Protection</td>
+            </tr>
+            <tr>
+              <td><strong>Throughput / Speed</strong></td>
+              <td>Lower speeds (7–35 TPS); delays caused by global consensus & gossip</td>
+              <td>Extremely high speeds (1,000–20,000+ TPS); instant sub-second finality</td>
+              <td>Decentralized Fault Tolerance vs Execution Speed</td>
+            </tr>
+            <tr>
+              <td><strong>Governance Matrix</strong></td>
+              <td>Decentralized consensus (Developers, miners, validators, users)</td>
+              <td>Consortium board, single enterprise owner, or regulator rules</td>
+              <td>Game Theory Economics vs Legal Contracts / SLAs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Access & Verification Simulation Flow Cards -->
+      <div class="trilemma-grid" style="margin-top: 24px;">
+        <div class="trilemma-card">
+          <h4>Simulation A: Public Permissionless Handshake</h4>
+          <p>
+            A new node announces itself to bootstrap peers ──> Automatic Protocol Handshake ──> Node immediately accepted into the P2P overlay ──> Node downloads full block history and begins validating blocks without seeking permission.
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>Simulation B: Private Permissioned Gatekeeper</h4>
+          <p>
+            A new node attempts connection ──> Vetted via Central Authority / Certificate Authority (X.509) ──> If CA check fails, connection dropped with an explicit <span class="tag tag-danger">ACCESS DENIED ❌</span>. If verified, granted scoped read/write permissions.
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>Consensus Protocols: PoW vs PBFT / Raft</h4>
+          <p>
+            Because private blockchains operate among known, authenticated participants, they do not require resource-intensive Proof of Work. They utilize fast leader-based consensus algorithms such as <strong>PBFT (Practical Byzantine Fault Tolerance)</strong> or <strong>Raft</strong>.
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>Consortium & Hybrid Blockchains</h4>
+          <p>
+            <strong>Consortium Chains:</strong> Governed by multiple competing enterprises (e.g., shipping alliances or banking networks).<br>
+            <strong>Hybrid Chains:</strong> Keep sensitive client records on a private ledger while anchoring periodic cryptographic Merkle roots to a public chain (e.g., Ethereum) for tamper-evident auditing.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <p>Educational Reference Architecture Simulator • Antigravity Consensus Lab</p>
+    </footer>
+  </div>
+
+  <script src="app_network_compare.js"></script>
+</body>
+</html>
