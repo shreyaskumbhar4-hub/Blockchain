@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 7: Proof of Work (PoW) vs. Proof of Stake (PoS) Consensus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="consensus-mechanics-page">
+  <div class="app-container">
+    <!-- Navigation Bar -->
+    <nav class="site-nav">
+      <div class="nav-brand">
+        <span class="pulse-dot"></span>
+        <span class="brand-title">BLOCKCHAIN LAB</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="topic1-intervention-simulation.html" class="nav-link">Topic 1: Intervention Simulator</a>
+        <a href="topic2-chain-integrity.html" class="nav-link">Topic 2: Chain Linkage & Tampering</a>
+        <a href="topic3-architectural-guide.html" class="nav-link">Topic 3: Architectural Reference</a>
+        <a href="topic4-avalanche-effect.html" class="nav-link">Topic 4: Avalanche Effect Lab</a>
+        <a href="topic5-asymmetric-cryptography.html" class="nav-link">Topic 5: Asymmetric Keys & Signing</a>
+        <a href="topic6-public-vs-private.html" class="nav-link">Topic 6: Public vs Private Chains</a>
+        <a href="topic7-pow-vs-pos.html" class="nav-link active">Topic 7: PoW vs PoS Consensus</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-badge">
+          <span class="pulse-dot"></span>
+          <span>TOPIC 07: DISTRIBUTED CONSENSUS MECHANICS</span>
+        </div>
+        <h1>Proof of Work (PoW) vs. Proof of Stake (PoS)</h1>
+        <p class="subtitle">Interactive simulation visualizing hash race mining vs. weighted slot election staking</p>
+      </div>
+      <div class="header-controls">
+        <a href="topic6-public-vs-private.html" class="btn btn-outline">← Back to Topic 6</a>
+        <a href="topic3-architectural-guide.html" class="btn btn-primary">Reference Guide →</a>
+      </div>
+    </header>
+
+    <!-- Main Stage Simulation Panel (Matching User Screenshots 1 - 4) -->
+    <section class="sim-panel full-width-panel pow-pos-stage-panel">
+      <!-- Top Canvas Visualizer -->
+      <div class="consensus-canvas-stage">
+        <!-- Target Puzzle Hash Badge (Visible during PoW) -->
+        <div class="pow-target-badge" id="powTargetBadge">
+          <span class="badge-title">TARGET PUZZLE HASH</span>
+          <span class="badge-hash font-mono" id="dispTargetHash">0000X_724</span>
+        </div>
+
+        <!-- Canvas -->
+        <canvas id="consensusCanvas" width="960" height="420"></canvas>
+
+        <!-- Pause / Play Control -->
+        <button class="stage-play-btn pos-abs-play" id="btnConsensusPlay" title="Play / Pause Simulation">
+          <svg id="consensusPlayIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="4" width="4" height="16"/>
+            <rect x="14" y="4" width="4" height="16"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Node Legend (Matching Screenshots) -->
+      <div class="consensus-legend-row">
+        <span class="cleg-item"><span class="cleg-dot dot-alpha"></span> Node Alpha</span>
+        <span class="cleg-item"><span class="cleg-dot dot-beta"></span> Node Beta</span>
+        <span class="cleg-item"><span class="cleg-dot dot-gamma"></span> Node Gamma</span>
+        <span class="cleg-item"><span class="cleg-dot dot-delta"></span> Node Delta</span>
+      </div>
+
+      <!-- Telemetry Strip (Matching Screenshots) -->
+      <div class="telemetry-metrics-bar">
+        <div class="tele-col">
+          <span class="tele-sub">Blocks Created</span>
+          <span class="tele-val text-white" id="statBlocksCreated">52</span>
+        </div>
+        <div class="tele-col">
+          <span class="tele-sub">Avg Block Time</span>
+          <span class="tele-val text-white" id="statAvgBlockTime">3.0s</span>
+        </div>
+        <div class="tele-col">
+          <span class="tele-sub">Power Cost</span>
+          <span class="tele-val text-white" id="statPowerCost">0.15 kW</span>
+        </div>
+      </div>
+
+      <!-- Interactive Controls Dashboard -->
+      <div class="consensus-controls-dashboard">
+        <!-- 1. Consensus Protocol Mode (PoW vs PoS) -->
+        <div class="control-box-full">
+          <label>Consensus Protocol Mode</label>
+          <div class="mode-toggle-pill-wrap">
+            <button class="mode-pill-btn" id="btnModePoW">Proof of Work (PoW)</button>
+            <button class="mode-pill-btn active" id="btnModePoS">Proof of Stake (PoS)</button>
+          </div>
+        </div>
+
+        <!-- 2. Dynamic Control: Difficulty Slider for PoW OR Stake Distribution Toggle for PoS -->
+        <!-- Sub-control A: PoW Difficulty Slider -->
+        <div class="control-box-full" id="ctrlPoWDifficulty" style="display: none;">
+          <div class="slider-label-row">
+            <label for="difficultySlider">Mining Target Difficulty</label>
+            <span class="slider-readout" id="lblDifficulty">Lvl 3</span>
+          </div>
+          <input type="range" id="difficultySlider" min="1" max="5" value="3" class="range-slider">
+        </div>
+
+        <!-- Sub-control B: PoS Validator Stake Distribution -->
+        <div class="control-box-full" id="ctrlPoSStake">
+          <label>Validator Stake Distribution</label>
+          <div class="mode-toggle-pill-wrap">
+            <button class="mode-pill-btn" id="btnStakeBalanced">Balanced Allocation</button>
+            <button class="mode-pill-btn active" id="btnStakeWhale">Centralized (Whale Node)</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Deep-Dive Comparison & Consensus Educational Matrix -->
+    <section class="educational-section">
+      <div class="section-title">
+        <h2>Core Mechanics: Computational Mining vs. Economic Staking</h2>
+        <p>Comparing the design principles, resource dependencies, and operational rules of both architectures</p>
+      </div>
+
+      <div class="matrix-table-wrap">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Architectural Attribute</th>
+              <th class="col-cent">Proof of Work (PoW)</th>
+              <th class="col-dec">Proof of Stake (PoS)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Primary Resource Used</strong></td>
+              <td>High hardware computation & electricity (Megawatts / Gigahashes)</td>
+              <td>Financial capital (Locked native crypto assets as bond)</td>
+            </tr>
+            <tr>
+              <td><strong>Block Producer Selector</strong></td>
+              <td>First node to solve the cryptographic hash puzzle (Nakamoto longest chain)</td>
+              <td>Pseudo-random selection weighted by coin stake size (e.g., RANDAO)</td>
+            </tr>
+            <tr>
+              <td><strong>Security Deterrent</strong></td>
+              <td>Wasted electrical energy & hardware costs on rejected fake blocks</td>
+              <td><strong>Slashing protocols</strong> (Permanent forfeiture of staked capital on double-signing)</td>
+            </tr>
+            <tr>
+              <td><strong>Environmental Footprint</strong></td>
+              <td>Significant due to continuous computational hardware racing</td>
+              <td>Extremely low ($\approx 99.95\%$ energy reduction, equivalent to standard servers)</td>
+            </tr>
+            <tr>
+              <td><strong>51% Attack Cost</strong></td>
+              <td>Requires acquiring $>50\%$ of physical global ASIC mining hardware</td>
+              <td>Requires purchasing and locking $>51\%$ of total network token supply</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Execution Flow Comparison Cards -->
+      <div class="trilemma-grid" style="margin-top: 24px;">
+        <div class="trilemma-card">
+          <h4>Route A: Proof of Work Execution Flow</h4>
+          <p>
+            New Block Ready ──> Miners spin up hardware ──> Guess millions of Nonce variations per second (<code>Hash: 903 (45 MH/s)</code>) ──> Miner A discovers valid hash starting with target zeros ──> Broadcasts block ──> Network Validates ✅
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>Route B: Proof of Stake Execution Flow</h4>
+          <p>
+            New Block Ready ──> Protocol reviews Staking Pool ──> Picks Validator based on coin weight lottery (Whale Node vs Balanced) ──> Validator selected ──> Proposes block with zero wasted power ──> Network Validates ✅
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>Slashing Protocols (The Economic Guillotine)</h4>
+          <p>
+            If a PoS validator signs two competing blocks at the same height (double-signing) or votes on an invalid history, their staked collateral (e.g., 32 ETH) is mathematically destroyed ("slashed") and the validator is ejected from the network.
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>The Whale Centralization Risk</h4>
+          <p>
+            In centralized stake distributions (where one node controls $80\%$ of staked coins), that "Whale Node" wins the vast majority of slot elections, centralizing block production unless delegated or distributed validator technology (DVT) is used.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <p>Educational Reference Architecture Simulator • Antigravity Consensus Lab</p>
+    </footer>
+  </div>
+
+  <script src="app_pow_pos.js"></script>
+</body>
+</html>
