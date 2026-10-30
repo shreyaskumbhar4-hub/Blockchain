@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 3: 1. Architectural Reference Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({ startOnLoad: true, theme: 'dark' });</script>
+</head>
+<body class="guide-page">
+  <div class="app-container">
+    <!-- Navigation Bar -->
+    <nav class="site-nav">
+      <div class="nav-brand">
+        <span class="pulse-dot"></span>
+        <span class="brand-title">BLOCKCHAIN LAB</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="topic1-intervention-simulation.html" class="nav-link">Topic 1: Intervention Simulator</a>
+        <a href="topic2-chain-integrity.html" class="nav-link">Topic 2: Chain Linkage & Tampering</a>
+        <a href="topic3-architectural-guide.html" class="nav-link active">Topic 3: Architectural Reference</a>
+        <a href="topic4-avalanche-effect.html" class="nav-link">Topic 4: Avalanche Effect Lab</a>
+        <a href="topic5-asymmetric-cryptography.html" class="nav-link">Topic 5: Asymmetric Keys & Signing</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-badge">
+          <span class="pulse-dot"></span>
+          <span>TOPIC 03: TECHNICAL SPECIFICATION</span>
+        </div>
+        <h1>1. Architectural Reference Document</h1>
+        <p class="subtitle">Complete technical analysis, sequence flowcharts, code comparisons, and mathematical proofs</p>
+      </div>
+      <div class="header-controls">
+        <a href="topic2-chain-integrity.html" class="btn btn-outline">← Back to Topic 2</a>
+        <a href="architecture_diagram.png" target="_blank" class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Visual Card
+        </a>
+      </div>
+    </header>
+
+    <!-- Document Content Article -->
+    <article class="doc-container">
+      <!-- Section 1 -->
+      <section class="doc-section">
+        <h2>1. Network Structural Mapping & Reference Topologies</h2>
+        <p>
+          In distributed systems, the structural topology determines whether intervention or state manipulation requires unilateral action or network-wide consensus.
+        </p>
+        <div class="doc-diagram-wrap">
+          <img src="architecture_diagram.png" alt="Star Topology vs Mesh Network" class="doc-main-img">
+          <p class="caption">Figure 1.1: Star Topology (Central Server Single Point of Failure) vs. Peer Equivalence Mesh Network</p>
+        </div>
+      </section>
+
+      <!-- Section 2 -->
+      <section class="doc-section">
+        <h2>2. Sequence Flowchart: Centralized Bank vs. Bitcoin Network on Freeze Attempt</h2>
+        
+        <h3>Scenario A: Centralized Bank Gateway Intervention</h3>
+        <div class="mermaid-wrap">
+          <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as Client Initiator
+    participant GW as Bank Gateway
+    participant Rule as Admin Freeze Filter
+    participant DB as Core SQL Ledger
+
+    User->>GW: Submit Transaction ($500.00 transfer)
+    GW->>Rule: Intercept & scan sanctions list
+    Note over Rule: Admin Rule Matched: is_frozen = TRUE
+    Rule--xDB: Drop packet / Abort write
+    Rule->>User: 403 Forbidden: Account Frozen (0% Processed)
+          </pre>
+        </div>
+
+        <h3>Scenario B: Decentralized Bitcoin Network Censorship Attempt</h3>
+        <div class="mermaid-wrap">
+          <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as User Signer
+    participant Mempool as Global P2P Mempool
+    participant Rogue as Intervened Peer 1 (Malicious)
+    participant Honest as Honest Peers (2 - 8)
+    participant Miner as Block Producer / Miner
+
+    User->>Mempool: Broadcast Signed Tx (ECDSA / Schnorr)
+    Mempool->>Rogue: Relay transaction
+    Mempool->>Honest: Relay transaction
+    Note over Rogue: Rogue Peer drops Tx (Censorship Attempt)
+    Note over Honest: Verify ECDSA Signature & UTXO Balance (VALID)
+    Honest->>Miner: Include Tx in Candidate Block
+    Miner->>Mempool: Mine & Broadcast Block #884,912
+    Note over Mempool: Quorum: Honest nodes (87.5% > 50%) mine valid chain
+    Mempool->>User: Confirmed in Block (100% Processed)
+          </pre>
+        </div>
+      </section>
+
+      <!-- Section 3 -->
+      <section class="doc-section">
+        <h2>3. Code Comparison: Administrative Censorship vs. Immutable Protocol Logic</h2>
+        <div class="code-comparison-grid">
+          <div class="code-box">
+            <h4>Centralized Bank Server (Node.js / Express / SQL)</h4>
+            <pre><code><span class="comment">// Single administrator can freeze account unilaterally</span>
+<span class="keyword">async function</span> <span class="function">processBankTransfer</span>(sender, recipient, amount) {
+  <span class="keyword">const</span> [account] = <span class="keyword">await</span> db.query(
+    <span class="string">"SELECT is_frozen, balance FROM accounts WHERE id = ? FOR UPDATE"</span>,
+    [sender]
+  );
+
+  <span class="keyword">if</span> (account.is_frozen) {
+    <span class="keyword">throw new</span> <span class="type">Error</span>(<span class="string">"403 Forbidden: Administrative freeze order."</span>);
+  }
+
+  <span class="comment">// Unilateral direct SQL state mutation</span>
+  <span class="keyword">await</span> db.query(<span class="string">"UPDATE accounts SET balance = balance - ? WHERE id = ?"</span>, [amount, sender]);
+  <span class="keyword">await</span> db.query(<span class="string">"UPDATE accounts SET balance = balance + ? WHERE id = ?"</span>, [amount, recipient]);
+  <span class="keyword">return</span> { status: <span class="string">"SETTLED"</span>, processed: <span class="string">"100%"</span> };
+}</code></pre>
+          </div>
+
+          <div class="code-box">
+            <h4>Decentralized Smart Contract (Solidity ERC-20 / Sovereign)</h4>
+            <pre><code><span class="comment">// Autonomous protocol logic: No admin pause function exists</span>
+<span class="keyword">contract</span> SovereignLedger {
+    <span class="keyword">mapping</span>(address => uint256) <span class="keyword">public</span> balances;
+
+    <span class="keyword">function</span> <span class="function">transfer</span>(address recipient, uint256 amount) <span class="keyword">public returns</span> (bool) {
+        <span class="comment">// Enforces open, immutable protocol rules</span>
+        require(recipient != address(0), <span class="string">"Invalid recipient"</span>);
+        require(balances[msg.sender] >= amount, <span class="string">"Insufficient funds"</span>);
+
+        balances[msg.sender] -= amount;
+        balances[recipient] += amount;
+
+        <span class="keyword">emit</span> <span class="function">Transfer</span>(msg.sender, recipient, amount);
+        <span class="keyword">return true</span>;
+    }
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4 -->
+      <section class="doc-section">
+        <h2>4. Mathematical Proof of Censorship Resistance (Nakamoto Consensus)</h2>
+        <p>
+          In Nakamoto consensus, the probability $P$ that an attacker or intervening coalition with hashrate fraction $q$ (where $p = 1 - q$ is the honest hashrate and $p > q$) can maintain a censoring fork follows a Poisson distribution:
+        </p>
+        <div class="math-card">
+          <code>P = ∑ [ (λ^k * e^-λ) / k! ] * (q / p)^max(z - k, 0)</code>
+          <p class="math-sub">Where $z$ is the confirmation depth and $\lambda = z \cdot (q / p)$.</p>
+        </div>
+        <p>
+          Because honest nodes in this simulation control <strong>87.5% of hash power</strong>, the probability of a freeze or fork succeeding drops exponentially towards zero with each newly mined block confirmation.
+        </p>
+      </section>
+    </article>
+
+    <footer class="app-footer">
+      <p>Educational Reference Architecture Simulator • Antigravity Consensus Lab</p>
+    </footer>
+  </div>
+</body>
+</html>

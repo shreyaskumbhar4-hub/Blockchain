@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 5: Asymmetric Cryptography & Digital Signatures</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="asymmetric-page">
+  <div class="app-container">
+    <!-- Navigation Bar -->
+    <nav class="site-nav">
+      <div class="nav-brand">
+        <span class="pulse-dot"></span>
+        <span class="brand-title">BLOCKCHAIN LAB</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="topic1-intervention-simulation.html" class="nav-link">Topic 1: Intervention Simulator</a>
+        <a href="topic2-chain-integrity.html" class="nav-link">Topic 2: Chain Linkage & Tampering</a>
+        <a href="topic3-architectural-guide.html" class="nav-link">Topic 3: Architectural Reference</a>
+        <a href="topic4-avalanche-effect.html" class="nav-link">Topic 4: Avalanche Effect Lab</a>
+        <a href="topic5-asymmetric-cryptography.html" class="nav-link active">Topic 5: Asymmetric Keys & Signing</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-badge">
+          <span class="pulse-dot"></span>
+          <span>TOPIC 05: ASYMMETRIC CRYPTOGRAPHY & WALLET SECURITY</span>
+        </div>
+        <h1>Public/Private Keypair Authorization & Signatures</h1>
+        <p class="subtitle">Interactive simulation visualizing inbound deposit routing vs. outbound cryptographic signature generation</p>
+      </div>
+      <div class="header-controls">
+        <a href="topic4-avalanche-effect.html" class="btn btn-outline">← Back to Topic 4</a>
+        <a href="topic3-architectural-guide.html" class="btn btn-primary">Reference Guide →</a>
+      </div>
+    </header>
+
+    <!-- Interactive Simulator Node Stage (Matching User Screenshots 1 & 2) -->
+    <section class="sim-panel full-width-panel asymmetric-stage-panel">
+      <!-- Top Canvas Visualizer -->
+      <div class="crypto-visualizer-stage" id="cryptoStage">
+        <!-- Node 1: Origin/Destination Actor Node -->
+        <div class="crypto-node actor-node" id="actorNode">
+          <div class="node-icon-wrap" id="actorIconWrap">
+            <!-- Down arrow for Receive, Cloud/Ledger for Spend -->
+            <svg id="actorIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+          </div>
+          <span class="node-title" id="actorTitle">External Sender</span>
+        </div>
+
+        <!-- Wire / Path Segment 1 -->
+        <div class="wire-connector wire-left" id="wireLeft">
+          <div class="packet-particle" id="particleLeft"></div>
+        </div>
+
+        <!-- Node 2: Public Key Address Card (Blue lock) -->
+        <div class="crypto-card public-card" id="publicCard">
+          <div class="card-header-bar">
+            <span class="card-label">Public Key Address</span>
+            <span class="lock-icon lock-blue">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+          </div>
+          <div class="card-key-val font-mono" id="dispPublicKey">0x71C8...3902</div>
+          <span class="card-subtext sub-green">Shared freely</span>
+        </div>
+
+        <!-- Wire / Middle Floating Authorization Node (Appears during Spend) -->
+        <div class="crypto-auth-pill" id="cryptoAuthPill">
+          <span class="auth-label">Crypto Authorization</span>
+          <span class="auth-val font-mono" id="dispSig">SIG[C734AB]</span>
+        </div>
+
+        <!-- Wire / Path Segment 2 -->
+        <div class="wire-connector wire-right" id="wireRight">
+          <div class="packet-particle" id="particleRight"></div>
+        </div>
+
+        <!-- Node 3: Private Key Card (Red lock - Confidential) -->
+        <div class="crypto-card private-card" id="privateCard">
+          <div class="card-header-bar">
+            <span class="card-label label-red">Private Key</span>
+            <span class="lock-icon lock-red">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.5" fill="none"/></svg>
+            </span>
+          </div>
+          <div class="card-key-val font-mono" id="dispPrivateKey">0x6c54...e11a</div>
+          <span class="card-subtext sub-dim">Keep strictly hidden</span>
+        </div>
+      </div>
+
+      <!-- Informative Subtitle Pill (Matching Image 1 & 2) -->
+      <div class="explanation-pill-bar">
+        <p id="modeExplanationPill">
+          Public keys act like an address anyone can use to forward asset deposits.
+        </p>
+      </div>
+
+      <!-- Identity, Balance, State Telemetry Bar (Matching Image 1 & 2) -->
+      <div class="keypair-telemetry-strip">
+        <div class="tele-item">
+          <span class="tele-label">Identity</span>
+          <span class="tele-val text-green" id="teleIdentity">Bob's Keypair</span>
+        </div>
+        <div class="tele-item">
+          <span class="tele-label">Balance</span>
+          <span class="tele-val text-white" id="teleBalance">12.50 BTC</span>
+        </div>
+        <div class="tele-item">
+          <span class="tele-label">State</span>
+          <span class="tele-val text-light" id="teleState">Awaiting</span>
+        </div>
+      </div>
+
+      <!-- Action Control Bar (Matching Image 1 & 2) -->
+      <div class="interactive-controls-footer">
+        <!-- Account Picker -->
+        <div class="control-col">
+          <label for="accountSelect">Active Account</label>
+          <select id="accountSelect" class="form-control select-account">
+            <option value="bob">Bob's Keypair</option>
+            <option value="alice">Alice's Keypair</option>
+            <option value="charlie">Charlie's Keypair</option>
+          </select>
+        </div>
+
+        <!-- Mode Toggle (Receive Assets vs Spend Sign) -->
+        <div class="control-col">
+          <label>Crypto Action</label>
+          <div class="action-toggle-pill-wrap">
+            <button class="action-btn-pill active" id="btnReceiveMode">Receive ...</button>
+            <button class="action-btn-pill" id="btnSpendMode">Spend Si...</button>
+          </div>
+        </div>
+
+        <!-- Execute Button -->
+        <div class="control-col btn-exec-wrap">
+          <button class="btn btn-primary btn-execute" id="btnExecuteSimulation">
+            Execute Simulation
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Deep-Dive Educational Matrix & Sequence Flow -->
+    <section class="educational-section">
+      <div class="section-title">
+        <h2>Identity Credentials & Secure Authorization Flow</h2>
+        <p>Understanding the fundamental separation between public routing and private authorization</p>
+      </div>
+
+      <div class="matrix-table-wrap">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Credential Element</th>
+              <th>Security Classification</th>
+              <th>Fundamental Network Duty</th>
+              <th>Real-World Analogy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong style="color: #ef4444;">Private Key</strong></td>
+              <td><span class="tag tag-danger">Strictly Offline / Confidential</span></td>
+              <td>Approves and signs outbound spending requests</td>
+              <td>Unique biometric signature, master key, or vault combination</td>
+            </tr>
+            <tr>
+              <td><strong style="color: #38bdf8;">Public Address</strong></td>
+              <td><span class="tag tag-success">Publicly Shared / Transparent</span></td>
+              <td>Acts as the target destination for incoming transfers</td>
+              <td>Postal mailbox slot or public IBAN/routing number</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3-Phase Execution Flow Grid -->
+      <div class="trilemma-grid" style="margin-top: 20px;">
+        <div class="trilemma-card">
+          <h4>Phase 1: Intent Creation</h4>
+          <p>
+            The user creates an unsigned transaction payload: <code>"Transfer 0.75 ETH to Public Address 0x8a..."</code> with nonce, gas fee, and recipient address.
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>Phase 2: Mathematical Signature Generation</h4>
+          <p>
+            Your client device combines the payload with your local <strong>Private Key</strong> through the Elliptic Curve Digital Signature Algorithm (ECDSA/secp256k1). Output: <code>SIG[C734AB...]</code>. <strong>Your private key never touches the internet.</strong>
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>Phase 3: Consensus Validation</h4>
+          <p>
+            Nodes receive <code>Signature String + Public Key + Payload</code>. Using one-way math, they confirm the signature could only have been produced by the private key corresponding to that public key!
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>Why No "Forgot Password"?</h4>
+          <p>
+            Because blockchains are decentralized without any master admin or central database, there is no root entity capable of resetting your private key. If lost, funds remain locked indefinitely.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <p>Educational Reference Architecture Simulator • Antigravity Consensus Lab</p>
+    </footer>
+  </div>
+
+  <script src="app_asymmetric.js"></script>
+</body>
+</html>

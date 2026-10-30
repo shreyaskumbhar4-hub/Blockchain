@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 2: Block Header Structure, Chain Linkage & Tamper Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Navigation Bar -->
+    <nav class="site-nav">
+      <div class="nav-brand">
+        <span class="pulse-dot"></span>
+        <span class="brand-title">BLOCKCHAIN LAB</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="topic1-intervention-simulation.html" class="nav-link">Topic 1: Intervention Simulator</a>
+        <a href="topic2-chain-integrity.html" class="nav-link active">Topic 2: Chain Linkage & Tampering</a>
+        <a href="topic3-architectural-guide.html" class="nav-link">Topic 3: Architectural Reference</a>
+        <a href="topic4-avalanche-effect.html" class="nav-link">Topic 4: Avalanche Effect Lab</a>
+        <a href="topic5-asymmetric-cryptography.html" class="nav-link">Topic 5: Asymmetric Keys & Signing</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-badge">
+          <span class="pulse-dot"></span>
+          <span>TOPIC 02: CRYPTOGRAPHIC INTEGRITY</span>
+        </div>
+        <h1>Block Header Structure & The Tamper-Evident Chain</h1>
+        <p class="subtitle">Simulating chronological block connections and real-time Avalanche Effect reactions</p>
+      </div>
+      <div class="header-controls">
+        <a href="topic1-intervention-simulation.html" class="btn btn-outline">← Back to Topic 1</a>
+        <a href="topic3-architectural-guide.html" class="btn btn-primary">Go to Reference Guide →</a>
+      </div>
+    </header>
+
+    <!-- Visual 3-Block Chain Sequence -->
+    <section class="educational-section" style="margin-bottom: 30px;">
+      <div class="chain-sim-container">
+        <div class="chain-sim-header">
+          <div class="sim-desc">
+            <h3>Chronological Block Linkage & Tamper Detection</h3>
+            <p>Notice how the <code>Previous Hash</code> field acts as the explicit connective tissue. Try tampering with Block #102 to observe the mathematical break!</p>
+          </div>
+          <div class="chain-sim-actions">
+            <button id="tamperBlock102Btn" class="btn btn-danger">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Tamper Block #102 (Hacker Attack)
+            </button>
+            <button id="restoreChainBtn" class="btn btn-outline">Restore Original Chain</button>
+          </div>
+        </div>
+
+        <div class="chain-cards-grid" id="chainCardsGrid">
+          <!-- Block 101 -->
+          <div class="block-card valid" id="cardBlock101">
+            <div class="block-badge">Block #101 <span class="badge-role">(The Parent)</span></div>
+            <div class="block-field">
+              <span class="field-label">Previous Hash</span>
+              <span class="field-val hash-val">0000a1b2...c3d4</span>
+            </div>
+            <div class="block-field">
+              <span class="field-label">Timestamp</span>
+              <span class="field-val">2026-10-30 19:25:01 UTC</span>
+            </div>
+            <div class="block-field tx-field">
+              <span class="field-label">Transaction Data Payload</span>
+              <div class="tx-items">
+                <div class="tx-row">• Alice -> Bob: 1.2 BTC</div>
+                <div class="tx-row">• Charlie -> Dave: 0.4 BTC</div>
+              </div>
+            </div>
+            <div class="block-field">
+              <span class="field-label">Nonce (Proof of Work)</span>
+              <span class="field-val font-mono">14,289</span>
+            </div>
+            <div class="block-hash-box">
+              <span class="hash-tag">CURRENT BLOCK HASH</span>
+              <div class="hash-display" id="hashBlock101">0000f789...e102</div>
+            </div>
+          </div>
+
+          <!-- Connecting Link 1 -->
+          <div class="chain-connector" id="connector101_102">
+            <div class="link-line"></div>
+            <div class="link-indicator valid">LINK VALID</div>
+          </div>
+
+          <!-- Block 102 -->
+          <div class="block-card valid" id="cardBlock102">
+            <div class="block-badge">Block #102 <span class="badge-role">(The Current Block)</span></div>
+            <div class="block-field">
+              <span class="field-label">Previous Hash (Matches Block 101)</span>
+              <span class="field-val hash-val" id="prevHashBlock102">0000f789...e102</span>
+            </div>
+            <div class="block-field">
+              <span class="field-label">Timestamp</span>
+              <span class="field-val">2026-10-30 19:35:14 UTC</span>
+            </div>
+            <div class="block-field tx-field">
+              <span class="field-label">Transaction Data Payload</span>
+              <div class="tx-items" id="txListBlock102">
+                <div class="tx-row highlight-tx" id="targetTxRow">• Bob -> Ethan: 0.5 BTC</div>
+                <div class="tx-row">• Frank -> Grace: 2.1 BTC</div>
+              </div>
+            </div>
+            <div class="block-field">
+              <span class="field-label">Nonce (Proof of Work)</span>
+              <span class="field-val font-mono">29,814</span>
+            </div>
+            <div class="block-hash-box">
+              <span class="hash-tag">CURRENT BLOCK HASH</span>
+              <div class="hash-display" id="hashBlock102">0000b543...a889</div>
+            </div>
+          </div>
+
+          <!-- Connecting Link 2 -->
+          <div class="chain-connector" id="connector102_103">
+            <div class="link-line"></div>
+            <div class="link-indicator valid" id="indicator102_103">LINK VALID</div>
+          </div>
+
+          <!-- Block 103 -->
+          <div class="block-card valid" id="cardBlock103">
+            <div class="block-badge">Block #103 <span class="badge-role">(The Child Block)</span></div>
+            <div class="block-field">
+              <span class="field-label">Previous Hash (Matches Block 102)</span>
+              <span class="field-val hash-val" id="prevHashBlock103">0000b543...a889</span>
+            </div>
+            <div class="block-field">
+              <span class="field-label">Timestamp</span>
+              <span class="field-val">2026-10-30 19:45:32 UTC</span>
+            </div>
+            <div class="block-field tx-field">
+              <span class="field-label">Transaction Data Payload</span>
+              <div class="tx-items">
+                <div class="tx-row">• Ethan -> Dave: 0.1 BTC</div>
+                <div class="tx-row">• Ivy -> Jack: 0.8 BTC</div>
+              </div>
+            </div>
+            <div class="block-field">
+              <span class="field-label">Nonce (Proof of Work)</span>
+              <span class="field-val font-mono">41,202</span>
+            </div>
+            <div class="block-hash-box">
+              <span class="hash-tag">CURRENT BLOCK HASH</span>
+              <div class="hash-display" id="hashBlock103">0000e998...f112</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chain Status Banner -->
+        <div class="chain-status-banner valid" id="chainStatusBanner">
+          <span class="status-icon">✅</span>
+          <div class="status-info">
+            <strong>BLOCKCHAIN CONSENSUS VERIFIED</strong>
+            <span>All block parent-fingerprints match. Mathematical integrity is sound across global nodes.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Deep Technical Explanation Cards -->
+    <section class="educational-section">
+      <div class="section-title">
+        <h2>Anatomy of Block Immutability</h2>
+        <p>Why changing even one comma in historical data destroys the entire mathematical structure</p>
+      </div>
+
+      <div class="trilemma-grid">
+        <div class="trilemma-card">
+          <h4>1. The Block Header</h4>
+          <p>
+            Contains the metadata that secures the block: <strong>Previous Hash</strong> (digital fingerprint of parent), <strong>Timestamp</strong>, <strong>Merkle Root</strong> (hash of all transactions combined), and <strong>Nonce</strong> (solution to the cryptographic mining puzzle).
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>2. The Avalanche Effect</h4>
+          <p>
+            Cryptographic hashing algorithms like SHA-256 produce deterministic but pseudo-random 256-bit hashes. Flipping a single bit or character in the input payload causes more than <strong>45% to 55% of all bits in the output hash to flip simultaneously</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Live Python Code Box -->
+      <div style="margin-top: 24px;">
+        <div class="code-box">
+          <h4>Python Script Demonstration (blockchain_tamper_demo.py)</h4>
+          <pre><code><span class="comment"># Live SHA-256 Avalanche Test (Try running 'python blockchain_tamper_demo.py' in terminal)</span>
+<span class="keyword">import</span> hashlib
+
+t1 = <span class="string">"Bob -> Ethan: 0.5 BTC"</span>
+t2 = <span class="string">"Bob -> Ethan: 0.6 BTC"</span>  <span class="comment"># Only 1 digit altered!</span>
+
+h1 = hashlib.sha256(t1.encode()).hexdigest()
+h2 = hashlib.sha256(t2.encode()).hexdigest()
+
+<span class="keyword">print</span>(h1) <span class="comment"># -> 6bc08bdbfe91dca4e3eb72d1c0c221ac2add0f1f24ad9e87bcc13fe31f95db5a</span>
+<span class="keyword">print</span>(h2) <span class="comment"># -> 67e5975f59520c7166405b3cec5d090d1df44d2145ae0e632f774b06c87de159</span>
+<span class="comment"># Result: 118 out of 256 bits (46.1%) flipped from a single digit difference!</span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <p>Educational Reference Architecture Simulator • Antigravity Consensus Lab</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

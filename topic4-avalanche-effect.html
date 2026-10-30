@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 4: The Avalanche Effect & One-Way Cryptographic Hashing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="avalanche-page">
+  <div class="app-container">
+    <!-- Navigation Bar -->
+    <nav class="site-nav">
+      <div class="nav-brand">
+        <span class="pulse-dot"></span>
+        <span class="brand-title">BLOCKCHAIN LAB</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="topic1-intervention-simulation.html" class="nav-link">Topic 1: Intervention Simulator</a>
+        <a href="topic2-chain-integrity.html" class="nav-link">Topic 2: Chain Linkage & Tampering</a>
+        <a href="topic3-architectural-guide.html" class="nav-link">Topic 3: Architectural Reference</a>
+        <a href="topic4-avalanche-effect.html" class="nav-link active">Topic 4: Avalanche Effect Lab</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-badge">
+          <span class="pulse-dot"></span>
+          <span>TOPIC 04: REAL-TIME CRYPTOGRAPHIC LAB</span>
+        </div>
+        <h1>The Avalanche Effect & One-Way Hashing</h1>
+        <p class="subtitle">Interactive simulation visualizing bit-level mutation maps and deterministic pseudorandomness in SHA-256</p>
+      </div>
+      <div class="header-controls">
+        <a href="topic2-chain-integrity.html" class="btn btn-outline">← Back to Topic 2</a>
+        <a href="topic3-architectural-guide.html" class="btn btn-primary">Reference Guide →</a>
+      </div>
+    </header>
+
+    <!-- Top Telemetry Dashboard (Matched to User Image 3) -->
+    <section class="avalanche-stats-bar">
+      <div class="stat-card">
+        <span class="stat-label">MUTATED BITS</span>
+        <span class="stat-number danger-stat" id="statMutatedBits">136</span>
+        <span class="stat-sub">out of 256 total bits</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">AVALANCHE %</span>
+        <span class="stat-number amber-stat" id="statAvalanchePct">53.1%</span>
+        <span class="stat-sub">>50% Bit Scramble Ideal</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">HEX BLOCKS CHANGED</span>
+        <span class="stat-number cyan-stat" id="statHexChanged">63 / 64</span>
+        <span class="stat-sub">Character Mutation Rate</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">OUTPUT INTEGRITY</span>
+        <span class="stat-number green-stat" id="statOutputIntegrity">DETERMINISTIC</span>
+        <span class="stat-sub">Fixed 256-bit Digest</span>
+      </div>
+    </section>
+
+    <!-- Interactive Simulator & View Switcher (Matched to User Image 1 & 2) -->
+    <section class="sim-panel full-width-panel">
+      <div class="panel-header">
+        <div class="title-wrap">
+          <span class="badge badge-centralized">Interactive Visualization</span>
+          <h2>SHA-256 Fingerprint Mutation Map</h2>
+        </div>
+        <!-- View Toggle Pills -->
+        <div class="view-toggle-group">
+          <button class="view-pill active" id="btnBitGridView">Bit Grid View</button>
+          <button class="view-pill" id="btnAvalancheFlow">Avalanche Flow</button>
+        </div>
+      </div>
+
+      <!-- View 1: 256-Bit Grid View (Matching Image 2) -->
+      <div class="view-container active" id="bitGridViewContainer">
+        <div class="bit-grid-header">
+          <p>Every cell represents one of the 256 output bits. A microscopic 1-character difference triggers a catastrophic shift flipping $>50\%$ of all bits.</p>
+          <div class="grid-legend">
+            <span class="legend-item"><span class="legend-box matched"></span> Matched Bit State (Unchanged)</span>
+            <span class="legend-item"><span class="legend-box flipped"></span> Flipped Bit (Avalanche Mutation)</span>
+          </div>
+        </div>
+
+        <div class="bit-grid-matrix" id="bitGridMatrix">
+          <!-- 256 Bit cells dynamically rendered via app_avalanche.js -->
+        </div>
+      </div>
+
+      <!-- View 2: Avalanche Engine Flow View (Matching Image 1) -->
+      <div class="view-container" id="avalancheFlowContainer">
+        <div class="avalanche-canvas-wrap">
+          <canvas id="avalancheCanvas" width="900" height="340"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Dual Input Playground (Matching Image 3) -->
+    <section class="playground-section">
+      <div class="section-title">
+        <h2>Live Dual-Input Hash Testing Console</h2>
+        <p>Type in either field or select a preset to watch the bit grid and 64-character hex signature mutate instantly in real time.</p>
+      </div>
+
+      <div class="input-console-card">
+        <!-- Preset Dropdown -->
+        <div class="form-group">
+          <label for="presetSelect">Select Preset Experiment:</label>
+          <select id="presetSelect" class="form-control">
+            <option value="quickBrown">The quick brown fox (Single period '.' difference)</option>
+            <option value="helloCase">"Hello" vs "hello" (Single lowercase 'h' change)</option>
+            <option value="exclamation">"Hello" vs "Hello!" (Appended exclamation mark)</option>
+            <option value="btcTransfer">Bob -> Ethan: 0.5 BTC vs 0.6 BTC (Single decimal change)</option>
+            <option value="custom">Custom Input Comparison</option>
+          </select>
+        </div>
+
+        <!-- Input A -->
+        <div class="form-group">
+          <label for="inputDataA">
+            <span class="input-tag tag-a">Input Data A</span>
+            <span class="char-count" id="countA">43 characters (43 bytes)</span>
+          </label>
+          <input type="text" id="inputDataA" class="form-control text-input-a" value="The quick brown fox jumps over the lazy dog">
+        </div>
+
+        <!-- Input B -->
+        <div class="form-group">
+          <label for="inputDataB">
+            <span class="input-tag tag-b">Input Data B (Tweak slightly to view avalanche effect)</span>
+            <span class="char-count" id="countB">44 characters (44 bytes)</span>
+          </label>
+          <input type="text" id="inputDataB" class="form-control text-input-b" value="The quick brown fox jumps over the lazy dog.">
+        </div>
+
+        <!-- 64-Character SHA-256 Output Signatures (Matching Image 3) -->
+        <div class="hash-results-box">
+          <div class="hash-result-row">
+            <span class="hash-tag-label tag-a">Hash A:</span>
+            <span class="hash-code mono font-a" id="hashAOutput">d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592</span>
+          </div>
+          <div class="hash-result-row">
+            <span class="hash-tag-label tag-b">Hash B:</span>
+            <span class="hash-code mono font-b" id="hashBOutput">ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Educational Deep Dive: Properties of Cryptographic Hashing -->
+    <section class="educational-section">
+      <div class="section-title">
+        <h2>Mathematical Pillars of One-Way Cryptographic Hashing</h2>
+        <p>Why modern blockchains and financial ledgers rely on SHA-256 for integrity</p>
+      </div>
+
+      <div class="trilemma-grid">
+        <div class="trilemma-card">
+          <h4>1. Deterministic Output</h4>
+          <p>
+            The exact same input string will <strong>always</strong> produce the identical 64-character (256-bit) hexadecimal digest, no matter how many millions of times or on which device it is calculated.
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>2. Pseudorandom Distribution</h4>
+          <p>
+            The resulting bits appear entirely random with maximal entropy. There is zero mathematical correlation between the input words and output bits, preventing any pattern analysis from reverse-engineering the source data.
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>3. Pre-Image Resistance (One-Way)</h4>
+          <p>
+            Given a target hash $H$, it is computationally infeasible to compute an input $M$ such that $\text{SHA-256}(M) = H$. A brute-force search would require on average $2^{256}$ operations (more than all atoms in the observable universe).
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>4. High Entropy Avalanche Reaction</h4>
+          <p>
+            A single bit modification at round 0 of the compression cycle cascades through all 64 internal rounds ($Ch, Maj, \Sigma_0, \Sigma_1$), flipping roughly 50% of the entire output matrix.
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Comparison Table from User Request -->
+      <div class="matrix-table-wrap" style="margin-top: 24px;">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Input Text</th>
+              <th>Byte Size</th>
+              <th>SHA-256 Hash Signature (Fixed 64 Characters)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>"Hello"</code></td>
+              <td>5 Bytes</td>
+              <td><code class="font-mono" style="color: #38bdf8;">185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969</code></td>
+            </tr>
+            <tr>
+              <td><code>"hello"</code></td>
+              <td>5 Bytes</td>
+              <td><code class="font-mono" style="color: #ef4444;">2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</code></td>
+            </tr>
+            <tr>
+              <td><code>"Hello!"</code></td>
+              <td>6 Bytes</td>
+              <td><code class="font-mono" style="color: #f59e0b;">3615f80c9d293ed7402687f94b22d58e529a38d8de8310bcd3d195f4c0f8130d</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <p>Educational Reference Architecture Simulator • Antigravity Consensus Lab</p>
+    </footer>
+  </div>
+
+  <script src="app_avalanche.js"></script>
+</body>
+</html>

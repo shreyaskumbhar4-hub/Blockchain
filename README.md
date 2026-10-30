@@ -1,0 +1,34 @@
+# Blockchain & Consensus Architecture Academy
+
+An interactive web simulation lab and educational platform comparing **Centralized Systems (Star Topology)** and **Decentralized Systems (Peer Equivalence Mesh)** under intervention (freeze attempts), cryptographic block linking, SHA-256 Avalanche Effect, and **Asymmetric Keypair Cryptography & Digital Signatures**.
+
+---
+
+## 📚 Multi-Page Curriculum Structure
+
+| Page | Topic | Description |
+| :--- | :--- | :--- |
+| [`index.html`](file:///c:/Users/a/Desktop/project%20folder/blockchain/index.html) | **Main Learning Portal** | Central curriculum hub linking all five modules with visual preview cards and quick-launch buttons. |
+| [`topic1-intervention-simulation.html`](file:///c:/Users/a/Desktop/project%20folder/blockchain/topic1-intervention-simulation.html) | **Topic 1: Functional Comparison Under Intervention** | Dual-canvas real-time simulation of a transaction freeze attempt (Central Bank Gateway $0\%$ vs Bitcoin P2P $100\%$). |
+| [`topic2-chain-integrity.html`](file:///c:/Users/a/Desktop/project%20folder/blockchain/topic2-chain-integrity.html) | **Topic 2: Block Header & Chain Linkage** | Interactive 3-block sequence with live "Tamper Block #102" attack testing and Python SHA-256 demo. |
+| [`topic3-architectural-guide.html`](file:///c:/Users/a/Desktop/project%20folder/blockchain/topic3-architectural-guide.html) | **Topic 3: 1. Architectural Reference Document** | Complete technical specification with Mermaid sequence diagrams, Solidity vs Node.js code, and Poisson $BFT$ proofs. |
+| [`topic4-avalanche-effect.html`](file:///c:/Users/a/Desktop/project%20folder/blockchain/topic4-avalanche-effect.html) | **Topic 4: The Avalanche Effect & One-Way Hashing** | Real-time 256-bit mutation map, dual-input live comparison playground, and Avalanche Flow canvas diagram. |
+| [`topic5-asymmetric-cryptography.html`](file:///c:/Users/a/Desktop/project%20folder/blockchain/topic5-asymmetric-cryptography.html) | **Topic 5: Asymmetric Keys & Digital Signatures** | Interactive visualization of inbound deposit routing (`Receive`) vs outbound ECDSA signing (`Spend`), matching your reference screenshots. |
+
+---
+
+## 🚀 How to Run Locally
+
+You can launch the academy directly in any modern browser:
+
+### Option 1: Open Directly
+```powershell
+start index.html
+```
+
+### Option 2: Local Web Server
+```powershell
+npx serve .
+# or
+python -m http.server 8000
+```

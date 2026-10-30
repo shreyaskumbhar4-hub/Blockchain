@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centralized vs Decentralized Network & Intervention Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Navigation Bar -->
+    <nav class="site-nav">
+      <div class="nav-brand">
+        <span class="pulse-dot"></span>
+        <span class="brand-title">BLOCKCHAIN LAB</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="topic1-intervention-simulation.html" class="nav-link active">Topic 1: Intervention Simulator</a>
+        <a href="topic2-chain-integrity.html" class="nav-link">Topic 2: Chain Linkage & Tampering</a>
+        <a href="topic3-architectural-guide.html" class="nav-link">Topic 3: Architectural Reference</a>
+        <a href="topic4-avalanche-effect.html" class="nav-link">Topic 4: Avalanche Effect Lab</a>
+        <a href="topic5-asymmetric-cryptography.html" class="nav-link">Topic 5: Asymmetric Keys & Signing</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-badge">
+          <span class="pulse-dot"></span>
+          <span>TOPIC 01: FUNCTIONAL COMPARISON UNDER INTERVENTION</span>
+        </div>
+        <h1>Centralized <span class="dim">vs</span> Decentralized Architecture</h1>
+        <p class="subtitle">Real-time Network Topology & System Intervention (Freeze Attempt) Simulator</p>
+      </div>
+      <div class="header-controls">
+        <div class="speed-control">
+          <label for="speedSelect">Simulation Speed:</label>
+          <select id="speedSelect">
+            <option value="0.6">0.6x (Deep Study)</option>
+            <option value="1" selected>1.0x (Normal)</option>
+            <option value="1.8">1.8x (Fast)</option>
+          </select>
+        </div>
+        <button id="resetAllBtn" class="btn btn-outline" title="Reset both networks to idle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          Reset Simulation
+        </button>
+      </div>
+    </header>
+
+    <!-- Top Unified Control Bar -->
+    <section class="master-control-bar">
+      <div class="action-card">
+        <div class="action-info">
+          <h3>Scenario 1: Normal Transaction Flow</h3>
+          <p>Broadcast a standard transaction across both architectures simultaneously without interference.</p>
+        </div>
+        <button id="runNormalBtn" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Simulate Normal Transfer
+        </button>
+      </div>
+
+      <div class="action-card danger-card">
+        <div class="action-info">
+          <h3>Scenario 2: System Intervention (Freeze Attempt)</h3>
+          <p>Simulate an active freeze/censorship command targeting the transaction initiator's account.</p>
+        </div>
+        <button id="runInterventionBtn" class="btn btn-danger">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          Trigger Freeze Attack
+        </button>
+      </div>
+    </section>
+
+    <!-- Main Dual Canvas Simulation Section -->
+    <main class="simulations-grid">
+      <!-- Centralized Star System -->
+      <section class="sim-panel centralized-panel" id="centralizedSection">
+        <div class="panel-header">
+          <div class="title-wrap">
+            <span class="badge badge-centralized">Star Topology</span>
+            <h2>Centralized System (Bank / Database)</h2>
+          </div>
+          <div class="system-status" id="centralizedStatusBadge">
+            <span class="status-indicator"></span>
+            <span class="status-text">SYSTEM IDLE</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="centralizedCanvas" width="560" height="420"></canvas>
+          <div class="topology-watermark">STAR TOPOLOGY • SINGLE POINT OF FAILURE</div>
+        </div>
+
+        <div class="telemetry-bar">
+          <div class="metric">
+            <span class="label">Ledger State</span>
+            <span class="value" id="centLedgerState">Synchronized</span>
+          </div>
+          <div class="metric">
+            <span class="label">Processing Rate</span>
+            <span class="value" id="centProcRate">0%</span>
+          </div>
+          <div class="metric">
+            <span class="label">Admin Override</span>
+            <span class="value danger-text" id="centOverrideState">Armed</span>
+          </div>
+          <div class="metric">
+            <span class="label">Fault Tolerance</span>
+            <span class="value" id="centFaultTol">0 Nodes (SPOF)</span>
+          </div>
+        </div>
+
+        <!-- Stepper / Pipeline -->
+        <div class="step-pipeline" id="centralizedPipeline">
+          <div class="pipeline-step" data-step="1">
+            <span class="step-num">1</span>
+            <div class="step-content">
+              <strong>User Initiates Tx</strong>
+              <small>Submits to Bank Gateway</small>
+            </div>
+          </div>
+          <div class="pipeline-step" data-step="2">
+            <span class="step-num">2</span>
+            <div class="step-content">
+              <strong>Admin Rule Check</strong>
+              <small>Scans blacklist / freeze orders</small>
+            </div>
+          </div>
+          <div class="pipeline-step" data-step="3">
+            <span class="step-num">3</span>
+            <div class="step-content">
+              <strong>Root Mutation</strong>
+              <small>Unilateral Master DB write</small>
+            </div>
+          </div>
+          <div class="pipeline-step" data-step="4">
+            <span class="step-num">4</span>
+            <div class="step-content">
+              <strong>Final Settlement</strong>
+              <small>Broadcasts result to clients</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="console-box">
+          <div class="console-header">
+            <span>CENTRAL GATEWAY AUDIT LOG</span>
+            <span class="timestamp" id="centTime">LIVE</span>
+          </div>
+          <div class="console-output" id="centralizedLog">
+            <div class="log-entry system">> Gateway listening on port :8443... Master ledger operational.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Decentralized Mesh System -->
+      <section class="sim-panel decentralized-panel" id="decentralizedSection">
+        <div class="panel-header">
+          <div class="title-wrap">
+            <span class="badge badge-decentralized">Peer Equivalence (Mesh)</span>
+            <h2>Decentralized System (Bitcoin / Ethereum)</h2>
+          </div>
+          <div class="system-status" id="decentralizedStatusBadge">
+            <span class="status-indicator"></span>
+            <span class="status-text">NETWORK IDLE</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="decentralizedCanvas" width="560" height="420"></canvas>
+          <div class="topology-watermark">DISTRIBUTED P2P • BYZANTINE FAULT TOLERANT</div>
+        </div>
+
+        <div class="telemetry-bar">
+          <div class="metric">
+            <span class="label">Honest Nodes</span>
+            <span class="value success-text" id="decHonestNodes">8 / 8 (100%)</span>
+          </div>
+          <div class="metric">
+            <span class="label">Consensus Quorum</span>
+            <span class="value" id="decQuorum">Passed (>50%)</span>
+          </div>
+          <div class="metric">
+            <span class="label">Mined In Block</span>
+            <span class="value success-text" id="decMinedBlock">#884,912</span>
+          </div>
+          <div class="metric">
+            <span class="label">Fault Tolerance</span>
+            <span class="value" id="decFaultTol">BFT Active</span>
+          </div>
+        </div>
+
+        <!-- Stepper / Pipeline -->
+        <div class="step-pipeline" id="decentralizedPipeline">
+          <div class="pipeline-step" data-step="1">
+            <span class="step-num">1</span>
+            <div class="step-content">
+              <strong>Broadcast to Mempool</strong>
+              <small>Gossip protocol to all peers</small>
+            </div>
+          </div>
+          <div class="pipeline-step" data-step="2">
+            <span class="step-num">2</span>
+            <div class="step-content">
+              <strong>Local Rule Validation</strong>
+              <small>ECDSA signature & UTXO balance</small>
+            </div>
+          </div>
+          <div class="pipeline-step" data-step="3">
+            <span class="step-num">3</span>
+            <div class="step-content">
+              <strong>Consensus Quorum</strong>
+              <small>Malicious node outvoted</small>
+            </div>
+          </div>
+          <div class="pipeline-step" data-step="4">
+            <span class="step-num">4</span>
+            <div class="step-content">
+              <strong>Immutable Block Mined</strong>
+              <small>Permanent state transition</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="console-box">
+          <div class="console-header">
+            <span>P2P CONSENSUS GOSSIP LOG</span>
+            <span class="timestamp" id="decTime">LIVE</span>
+          </div>
+          <div class="console-output" id="decentralizedLog">
+            <div class="log-entry system">> Connected to 8 full nodes across global peers. Merkle root verified.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Side-by-Side Deep Comparison & Interactive Matrix -->
+    <section class="educational-section">
+      <div class="section-title">
+        <h2>Mathematical & Structural Divergence Matrix</h2>
+        <p>How the two paradigms mathematically evaluate identity, trust, and execution</p>
+      </div>
+
+      <div class="matrix-table-wrap">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Feature / Metric</th>
+              <th class="col-cent">Centralized Bank Simulation</th>
+              <th class="col-dec">Bitcoin Decentralized Simulation</th>
+              <th>Architectural Principle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Primary Core Actor</strong></td>
+              <td>Central Database Server (e.g., Oracle, SQL Cluster)</td>
+              <td>Global Distributed Peer Nodes running consensus software</td>
+              <td>Single Authority vs Sovereign Peers</td>
+            </tr>
+            <tr>
+              <td><strong>Trust Model</strong></td>
+              <td>High trust in a single intermediary / administrator</td>
+              <td>Trustless, governed by mathematics & cryptography</td>
+              <td>Subjective Policy vs Deterministic Math</td>
+            </tr>
+            <tr>
+              <td><strong>Action: Account Freeze</strong></td>
+              <td><span class="tag tag-danger">Instantly Blocked (100%)</span> — 1 SQL update alters root</td>
+              <td><span class="tag tag-success">Rejected (0% Censored)</span> — Requires >50% hash consensus</td>
+              <td>Unilateral Override vs Democratic Quorum</td>
+            </tr>
+            <tr>
+              <td><strong>System Resiliency</strong></td>
+              <td>High Single Point of Failure (SPOF)</td>
+              <td>Byzantine Fault Tolerant (Thrives if portions offline)</td>
+              <td>Cascade Fragility vs Mesh Redundancy</td>
+            </tr>
+            <tr>
+              <td><strong>Data Mutability</strong></td>
+              <td>Mutable (Entries can be backdated, modified, or scrubbed)</td>
+              <td>Immutable (Append-only cryptographic hash chain)</td>
+              <td>Reversible Records vs Proof of History</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Explanatory Interactive Tabs -->
+      <div class="deep-dive-tabs">
+        <div class="tab-buttons">
+          <button class="tab-btn active" data-tab="tab-chainlink">Block Header & Tamper-Evident Chain Simulation</button>
+          <button class="tab-btn" data-tab="tab-code">Smart Contract Logic vs Bank Code</button>
+          <button class="tab-btn" data-tab="tab-consensus">Why >50% Hash Power Prevents Intervention</button>
+          <button class="tab-btn" data-tab="tab-trilemma">The Scalability Trade-off (Trilemma)</button>
+        </div>
+
+        <!-- NEW INTERACTIVE CHAIN LINK SIMULATOR TAB -->
+        <div class="tab-content active" id="tab-chainlink">
+          <div class="chain-sim-container">
+            <div class="chain-sim-header">
+              <div class="sim-desc">
+                <h3>Chronological Block Linkage & Tamper Detection</h3>
+                <p>Observe how each block's cryptographic hash is embedded into its child block as <code>Previous Hash</code>. Try altering a transaction in Block #102 to see the Avalanche Effect break the chain in real time!</p>
+              </div>
+              <div class="chain-sim-actions">
+                <button id="tamperBlock102Btn" class="btn btn-danger">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Tamper Block #102 (Hacker Attack)
+                </button>
+                <button id="restoreChainBtn" class="btn btn-outline">Restore Original Chain</button>
+              </div>
+            </div>
+
+            <!-- Visual 3-Block Chain Sequence -->
+            <div class="chain-cards-grid" id="chainCardsGrid">
+              <!-- Block 101 -->
+              <div class="block-card valid" id="cardBlock101">
+                <div class="block-badge">Block #101 <span class="badge-role">(Parent)</span></div>
+                <div class="block-field">
+                  <span class="field-label">Previous Hash</span>
+                  <span class="field-val hash-val">0000a1b2...c3d4</span>
+                </div>
+                <div class="block-field">
+                  <span class="field-label">Timestamp</span>
+                  <span class="field-val">2026-10-30 19:25:01 UTC</span>
+                </div>
+                <div class="block-field tx-field">
+                  <span class="field-label">Transaction Payload</span>
+                  <div class="tx-items">
+                    <div class="tx-row">• Alice -> Bob: 1.2 BTC</div>
+                    <div class="tx-row">• Charlie -> Dave: 0.4 BTC</div>
+                  </div>
+                </div>
+                <div class="block-field">
+                  <span class="field-label">Nonce</span>
+                  <span class="field-val font-mono">14,289</span>
+                </div>
+                <div class="block-hash-box">
+                  <span class="hash-tag">CURRENT BLOCK HASH</span>
+                  <div class="hash-display" id="hashBlock101">0000f789...e102</div>
+                </div>
+              </div>
+
+              <!-- Connecting Link 1 -->
+              <div class="chain-connector" id="connector101_102">
+                <div class="link-line"></div>
+                <div class="link-indicator valid">LINK VALID</div>
+              </div>
+
+              <!-- Block 102 -->
+              <div class="block-card valid" id="cardBlock102">
+                <div class="block-badge">Block #102 <span class="badge-role">(Current Block)</span></div>
+                <div class="block-field">
+                  <span class="field-label">Previous Hash</span>
+                  <span class="field-val hash-val" id="prevHashBlock102">0000f789...e102</span>
+                </div>
+                <div class="block-field">
+                  <span class="field-label">Timestamp</span>
+                  <span class="field-val">2026-10-30 19:35:14 UTC</span>
+                </div>
+                <div class="block-field tx-field">
+                  <span class="field-label">Transaction Payload</span>
+                  <div class="tx-items" id="txListBlock102">
+                    <div class="tx-row highlight-tx" id="targetTxRow">• Bob -> Ethan: 0.5 BTC</div>
+                    <div class="tx-row">• Frank -> Grace: 2.1 BTC</div>
+                  </div>
+                </div>
+                <div class="block-field">
+                  <span class="field-label">Nonce</span>
+                  <span class="field-val font-mono">29,814</span>
+                </div>
+                <div class="block-hash-box">
+                  <span class="hash-tag">CURRENT BLOCK HASH</span>
+                  <div class="hash-display" id="hashBlock102">0000b543...a889</div>
+                </div>
+              </div>
+
+              <!-- Connecting Link 2 -->
+              <div class="chain-connector" id="connector102_103">
+                <div class="link-line"></div>
+                <div class="link-indicator valid" id="indicator102_103">LINK VALID</div>
+              </div>
+
+              <!-- Block 103 -->
+              <div class="block-card valid" id="cardBlock103">
+                <div class="block-badge">Block #103 <span class="badge-role">(Child Block)</span></div>
+                <div class="block-field">
+                  <span class="field-label">Previous Hash (Hardcoded)</span>
+                  <span class="field-val hash-val" id="prevHashBlock103">0000b543...a889</span>
+                </div>
+                <div class="block-field">
+                  <span class="field-label">Timestamp</span>
+                  <span class="field-val">2026-10-30 19:45:32 UTC</span>
+                </div>
+                <div class="block-field tx-field">
+                  <span class="field-label">Transaction Payload</span>
+                  <div class="tx-items">
+                    <div class="tx-row">• Ethan -> Dave: 0.1 BTC</div>
+                    <div class="tx-row">• Ivy -> Jack: 0.8 BTC</div>
+                  </div>
+                </div>
+                <div class="block-field">
+                  <span class="field-label">Nonce</span>
+                  <span class="field-val font-mono">41,202</span>
+                </div>
+                <div class="block-hash-box">
+                  <span class="hash-tag">CURRENT BLOCK HASH</span>
+                  <div class="hash-display" id="hashBlock103">0000e998...f112</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chain Status Banner -->
+            <div class="chain-status-banner valid" id="chainStatusBanner">
+              <span class="status-icon">✅</span>
+              <div class="status-info">
+                <strong>BLOCKCHAIN CONSENSUS VERIFIED</strong>
+                <span>All block parent-fingerprints match. Mathematical integrity is sound across global nodes.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-code">
+          <div class="code-comparison-grid">
+            <div class="code-box">
+              <h4>Bank Centralized Server Logic (Node.js / SQL)</h4>
+              <pre><code><span class="keyword">async function</span> <span class="function">processTransaction</span>(sender, recipient, amount) {
+  <span class="comment">// 1. Central Admin Check - Single Point of Censorship</span>
+  <span class="keyword">const</span> account = <span class="keyword">await</span> db.query(<span class="string">"SELECT * FROM accounts WHERE id = ?"</span>, [sender]);
+  
+  <span class="keyword">if</span> (account.is_frozen || account.compliance_flag === <span class="string">"INTERVENTION"</span>) {
+    <span class="comment">// The central server unilaterally terminates processing</span>
+    <span class="keyword">throw new</span> <span class="type">Error</span>(<span class="string">"403 Forbidden: Transaction Frozen by Central Authority"</span>);
+  }
+
+  <span class="comment">// 2. Master DB direct state mutation</span>
+  <span class="keyword">await</span> db.query(<span class="string">"UPDATE accounts SET balance = balance - ? WHERE id = ?"</span>, [amount, sender]);
+  <span class="keyword">return</span> { status: <span class="string">"APPROVED"</span> };
+}</code></pre>
+            </div>
+
+            <div class="code-box">
+              <h4>Decentralized Blockchain Protocol Rule (Solidity / Bitcoin Script)</h4>
+              <pre><code><span class="comment">// Autonomous execution: No single entity has admin freeze rights</span>
+<span class="keyword">function</span> <span class="function">transfer</span>(address recipient, uint256 amount) <span class="keyword">public returns</span> (bool) {
+  <span class="comment">// 1. Cryptographic validation verified by all peers</span>
+  require(balances[msg.sender] >= amount, <span class="string">"Insufficient funds"</span>);
+  require(msg.sender != address(0), <span class="string">"Invalid sender"</span>);
+
+  <span class="comment">// 2. Deterministic math executed across every node</span>
+  balances[msg.sender] -= amount;
+  balances[recipient] += amount;
+
+  <span class="comment">// Even if Peer 3 refuses, Peers 1, 2, 4-8 broadcast and mine block</span>
+  <span class="keyword">emit</span> <span class="function">Transfer</span>(msg.sender, recipient, amount);
+  <span class="keyword">return true</span>;
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-consensus">
+          <div class="consensus-explanation">
+            <h3>How Byzantine Fault Tolerance (BFT) Neutralizes Censorship</h3>
+            <p>In Bitcoin's Proof-of-Work (Nakamoto Consensus), transactions reside in an open public mempool. Each mining node independently bundles unconfirmed transactions into candidate blocks:</p>
+            <ul>
+              <li><strong>The Attacking/Intervened Node:</strong> Node 3 is instructed to blacklist your address and refuses to include your transfer.</li>
+              <li><strong>The Honest Majority:</strong> Nodes 1, 2, 4, 5, 6, 7, and 8 evaluate your transaction against open protocol rules (valid ECDSA signature, unspent transaction output exists).</li>
+              <li><strong>The Longest Chain Rule:</strong> Once any honest miner discovers a valid block header hash satisfying the difficulty target, that block propagates across the mesh. Because 87.5% of hashing power is honest in this simulation, the honest chain mathematically dominates, rendering Node 3's freeze completely irrelevant.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-trilemma">
+          <div class="consensus-explanation">
+            <h3>Performance vs Censorship-Resistance (The Trilemma)</h3>
+            <p>Why isn't everything decentralized? The comparison hinges on computational trade-offs:</p>
+            <div class="trilemma-grid">
+              <div class="trilemma-card">
+                <h4>Centralized Systems</h4>
+                <div class="tri-metric">10,000 - 65,000+ TPS</div>
+                <p>Because only 1 central database executes and commits the write, latency is milliseconds. However, you trade away autonomy and inherit a Single Point of Failure.</p>
+              </div>
+              <div class="trilemma-card">
+                <h4>Decentralized Systems</h4>
+                <div class="tri-metric">7 - 35 TPS (L1 Base)</div>
+                <p>Every single transaction must be redundantly computed, gossiped, and stored by thousands of nodes globally. You sacrifice raw throughput for absolute censorship resistance and mathematical neutrality.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Educational Reference Architecture Simulator • Based on Nakamoto Consensus vs Star Architecture</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

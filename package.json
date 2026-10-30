@@ -1,0 +1,19 @@
+{
+  "name": "blockchain-centralized-vs-decentralized-simulator",
+  "version": "1.0.0",
+  "description": "Interactive Web Simulator teaching Centralized vs Decentralized Architectures under Intervention (Freeze Attempt)",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "blockchain",
+    "consensus",
+    "centralized",
+    "decentralized",
+    "star-topology",
+    "mesh-network",
+    "simulation"
+  ],
+  "author": "",
+  "license": "MIT"
+}
