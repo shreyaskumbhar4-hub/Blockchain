@@ -2253,3 +2253,152 @@ body {
     align-items: flex-start;
   }
 }
+
+/* Topic 7: PoW vs PoS Consensus Stage Styles (Matched to Screenshots 1 - 4) */
+.pow-pos-stage-panel {
+  padding: 24px;
+  background: #0d111d;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.consensus-canvas-stage {
+  position: relative;
+  background: #080c16;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 420px;
+}
+
+.consensus-canvas-stage canvas {
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  display: block;
+}
+
+/* PoW Target Puzzle Hash Badge */
+.pow-target-badge {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111827;
+  border: 1px solid #1f293d;
+  padding: 6px 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.pow-target-badge .badge-title {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.pow-target-badge .badge-hash {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+.pos-abs-play {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 3;
+}
+
+/* Node Legend Row */
+.consensus-legend-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 6px 0;
+  flex-wrap: wrap;
+}
+
+.cleg-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+.cleg-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot-alpha { background: #3b82f6; box-shadow: 0 0 6px #3b82f6; }
+.dot-beta { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+.dot-gamma { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+.dot-delta { background: #10b981; box-shadow: 0 0 6px #10b981; }
+
+/* Consensus Controls Dashboard */
+.consensus-controls-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 24px;
+  background: #090d17;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.control-box-full {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-box-full label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.mode-toggle-pill-wrap {
+  display: flex;
+  background: #111827;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.mode-pill-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 10px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mode-pill-btn.active {
+  background: #2563eb;
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(37, 99, 235, 0.4);
+}
