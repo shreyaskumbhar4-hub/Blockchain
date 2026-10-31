@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 08: Gas Fees & Network Resource Pricing | Blockchain Lab</title>
+<script src="app_gas_fees.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--bg:#10141d;--panel:#171e2b;--panel2:#202938;--line:#344258;--muted:#9aa8bb;--text:#e7edf7;--blue:#3478f6;--cyan:#28b9ed;--purple:#9636e8;--pink:#e72bb4;--green:#19d58a;--yellow:#ffc629;--red:#ff647c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+.app{max-width:1440px;margin:auto;padding:22px}
+nav{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 18px;border:1px solid #293548;border-radius:14px;background:#151c28;margin-bottom:24px}
+.brand{font-family:"Fira Code",monospace;font-weight:600;letter-spacing:1.5px;color:#dce8fa}.dot{display:inline-block;width:9px;height:9px;background:var(--green);border-radius:50%;margin-right:10px;box-shadow:0 0 12px var(--green)}
+.navlinks{display:flex;gap:16px;flex-wrap:wrap}.navlinks a{color:var(--muted);text-decoration:none;font-size:12px}.navlinks a.active,.navlinks a:hover{color:#65a0ff}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin:24px 0}
+.eyebrow{display:inline-block;color:var(--green);font:12px "Fira Code",monospace;border:1px solid #1d654d;background:#10271f;padding:7px 10px;border-radius:6px}
+h1{font-size:clamp(26px,4vw,42px);margin:13px 0 8px;letter-spacing:-1.2px}header p{color:var(--muted);margin:0;max-width:760px;line-height:1.6;font-size:14px}
+.btn{display:inline-block;padding:10px 14px;border:1px solid #3b5d91;color:#8bb8ff;text-decoration:none;border-radius:8px;font-size:12px;white-space:nowrap}
+.panel{background:#1a202c;border:1px solid #303b4d;border-radius:15px;overflow:hidden;box-shadow:0 12px 35px #0002}
+.sim-head{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;border-bottom:1px solid #303b4d;background:#171d28}
+.sim-head strong{font:13px "Fira Code",monospace;letter-spacing:.5px}.live{font-size:11px;color:var(--green)}.live:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:8px}
+.visual-wrap{padding:20px;background:#111720}
+.visual{height:320px;display:grid;grid-template-columns:100px minmax(0,1fr) 170px;gap:16px;align-items:stretch}
+.tx-entry{display:flex;align-items:center;justify-content:center;color:#91a0b5;font:13px "Fira Code",monospace}
+.pool{position:relative;border:1.5px solid #34445b;border-radius:14px;background:linear-gradient(115deg,#131c2b,#202d40);overflow:hidden}
+.pool-title{position:absolute;top:13px;left:20px;color:#9eacc0;font:12px "Fira Code",monospace;z-index:3}
+.priority-label{position:absolute;top:13px;right:15%;color:var(--green);font:11px "Fira Code",monospace;z-index:3}
+.priority-line{position:absolute;right:0;top:0;height:100%;border-right:2px dashed #3478f6;opacity:.85}
+.block{border:2px solid #285ca9;border-radius:14px;background:linear-gradient(160deg,#172234,#111925);position:relative;padding:14px;display:flex;flex-direction:column;align-items:center}
+.block-title{align-self:flex-start;color:#4d94ff;font:13px "Fira Code",monospace;white-space:nowrap}.block-bar{height:5px;background:#3478f6;border-radius:10px;width:100%;margin:13px 0 10px}
+.block-core{width:78px;height:78px;border:3px solid #ffc629;background:#e72bb4;border-radius:50%;box-shadow:0 0 0 5px #ffc62922;display:flex;align-items:center;justify-content:center;margin:auto;position:relative}
+.block-core:after{content:"";width:38px;height:38px;background:#e72bb4;border-radius:50%;box-shadow:0 0 0 7px #e72bb422}
+.block-cap{color:#aab8cb;font-size:11px;margin-top:auto;white-space:nowrap}
+.pool-tx{position:absolute;border-radius:50%;box-shadow:inset -4px -5px 9px #0002;transition:transform .5s,left .5s,top .5s,opacity .5s;z-index:2}
+.pool-tx.low{background:#2879e9}.pool-tx.mid{background:#7930e7}.pool-tx.high{background:#df2bb3}
+.pool-tx.mine{background:#ffcb39;outline:3px solid #fff0a8;outline-offset:3px;z-index:4}
+.pool-tx.traveling{pointer-events:none;z-index:1000;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .7s ease}
+.tx-legend{position:absolute;bottom:12px;left:20px;right:10px;display:flex;flex-wrap:wrap;gap:8px;color:#91a0b5;font-size:10px;z-index:3}
+.legend-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.telemetry{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #333d4c;border-bottom:1px solid #333d4c;background:#252a34}
+.metric{text-align:center;padding:18px 10px;border-right:1px solid #343b48}.metric:last-child{border:0}.metric label{display:block;color:#aeb8c8;font-size:12px;margin-bottom:8px}.metric strong{font-size:19px;font-weight:600}.yellow{color:var(--yellow)}.blue{color:#4c91ff}.green{color:var(--green)}
+.controls{padding:20px;background:#202530}
+.control-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.control-label{display:flex;justify-content:space-between;gap:12px;color:#b4bfce;font-size:13px;margin-bottom:15px}.control-label strong{color:#5b9aff;font-weight:600;white-space:nowrap}
+input[type=range]{width:100%;accent-color:#3478f6;cursor:pointer}
+.costbox{margin-top:20px;padding:17px 18px;background:#303540;border-radius:12px;color:#bdc6d4;font-size:13px;line-height:1.6}
+.costline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.costline strong{color:#f0f4fb;font-size:16px}.warning{margin-top:10px;color:#f5bd57;font-size:12px}.statusdot{width:10px;height:10px;border-radius:50%;background:var(--yellow);display:inline-block}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+button{border:1px solid #3b5b8c;background:#17263c;color:#9fc3ff;padding:10px 14px;border-radius:8px;font:12px Inter;cursor:pointer}
+button.primary{background:#2868d9;color:white;border-color:#3478f6}button:hover{filter:brightness(1.15)}
+.section{margin-top:30px}.section h2{font-size:23px;margin:0 0 7px}.section-intro{color:var(--muted);font-size:13px;line-height:1.6;margin:0 0 18px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.info-card{background:#171e2a;border:1px solid #303b4d;border-radius:12px;padding:18px}.info-card h3{font-size:14px;margin:0 0 9px;color:#8eb9ff}.info-card p{font-size:12px;color:#aeb9c9;line-height:1.7;margin:0}
+.table-wrap{overflow-x:auto;border:1px solid #303b4d;border-radius:12px}table{width:100%;border-collapse:collapse;min-width:650px;background:#171e2a;font-size:12px}th,td{text-align:left;padding:13px 15px;border-bottom:1px solid #303b4d}th{color:#8fbaff;background:#202938;font-weight:600}td{color:#b8c3d2}tr:last-child td{border-bottom:0}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.flow-step{padding:16px;background:#171e2a;border:1px solid #303b4d;border-radius:10px;position:relative}.flow-step b{display:block;color:#70a9ff;font-size:12px;margin-bottom:7px}.flow-step span{font-size:11px;color:#aeb9c9;line-height:1.6}
+.formula{padding:17px;border-radius:10px;background:#111925;border:1px solid #34445b;font:13px "Fira Code",monospace;color:#9fc3ff;overflow-wrap:anywhere}
+footer{text-align:center;color:#748399;font:11px "Fira Code",monospace;padding:30px 0 10px}
+@media(max-width:800px){.app{padding:12px}nav{align-items:flex-start;flex-direction:column}.visual{grid-template-columns:60px minmax(0,1fr) 115px;height:280px;gap:8px}.block{padding:10px}.block-title{font-size:10px}.block-cap{font-size:9px}.control-grid{grid-template-columns:1fr;gap:20px}.cards{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}header{align-items:flex-start;flex-direction:column}.metric strong{font-size:15px}.metric label{font-size:10px}}
+@media(max-width:480px){.visual{grid-template-columns:42px minmax(0,1fr) 88px;height:245px}.tx-entry{font-size:9px}.pool-title{left:10px;font-size:9px}.priority-label{font-size:8px;right:10%}.block-title{font-size:8px}.block-core{width:55px;height:55px}.block-cap{font-size:8px}.tx-legend{left:10px;gap:5px;font-size:8px}.metric{padding:14px 4px}.metric strong{font-size:12px}.metric label{font-size:9px}.flow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<nav><div class="brand"><span class="dot"></span>BLOCKCHAIN LAB</div><div class="navlinks"><a href="index.html">Home</a><a href="topic6-public-vs-private.html">Topic 6</a><a href="topic7-smart-contracts.html">Topic 7: Smart Contracts</a><a class="active" href="#">Topic 8: Gas Fees</a></div></nav>
+<header><div><span class="eyebrow">TOPIC 08: GAS FEES & NETWORK RESOURCE PRICING</span><h1>Gas Fee & Mempool Priority Simulator</h1><p>Explore how Ethereum prices computation, how transactions wait in the mempool, and how validators select transactions when block space is limited.</p></div><a class="btn" href="topic7-smart-contracts.html">← Back to Topic 7</a></header>
+
+<section class="panel">
+<div class="sim-head"><strong>LIVE NETWORK RESOURCE ALLOCATION</strong><span class="live" id="networkState">NETWORK SIMULATION RUNNING</span></div>
+<div class="visual-wrap">
+<div class="visual">
+<div class="tx-entry">TX ENTRY</div>
+<div class="pool" id="pool"><span class="pool-title">PENDING MEMPOOL POOL</span><span class="priority-label">HIGH PRIORITY ZONE</span><div class="priority-line"></div><div class="tx-legend"><span><i class="legend-dot" style="background:#2879e9"></i>Low bid</span><span><i class="legend-dot" style="background:#7930e7"></i>Medium</span><span><i class="legend-dot" style="background:#df2bb3"></i>High bid</span><span><i class="legend-dot" style="background:#ffcb39"></i>Your bid</span></div></div>
+<div class="block"><div class="block-title" id="blockTitle">BLOCK #183</div><div class="block-bar" id="blockBar"></div><div class="block-core"></div><div class="block-cap">Cap: 12 Tx Max</div></div>
+</div>
+</div>
+<div class="telemetry">
+<div class="metric"><label>BASE GAS FEE</label><strong id="baseFee">108 Gwei</strong></div>
+<div class="metric"><label>YOUR BID POSITION</label><strong class="yellow" id="rank">Rank #8</strong></div>
+<div class="metric"><label>EST. INCLUSION TIME</label><strong id="eta">~108s (18 blocks)</strong></div>
+</div>
+<div class="controls">
+<div class="control-grid">
+<div><div class="control-label"><label for="congestion">Network Traffic Congestion</label><strong id="congestionValue">61%</strong></div><input id="congestion" type="range" min="0" max="100" value="61"></div>
+<div><div class="control-label"><label for="tip">Your Priority Tip (Gwei)</label><strong id="tipValue">+3.0 Gwei</strong></div><input id="tip" type="range" min="0" max="30" step=".5" value="3"></div>
+</div>
+<div class="costbox"><div class="costline"><span class="statusdot"></span><span>Estimated cost (21,000 gas):</span><strong id="totalCost">0.002331 ETH</strong></div><div class="warning" id="warning">⚠ Low tip detected. Your transaction is outbid and may be delayed until congestion clears.</div></div>
+<div class="actions"><button class="primary" id="submit">Submit Transaction</button><button id="mine">Mine Next Block</button><button id="reset">Reset Simulation</button></div>
+</div>
+</section>
+
+<section class="section"><h2>How the network allocates resources</h2><p class="section-intro">A transaction consumes computational work and competes for a place in a block. Try changing congestion and your tip above to see how the queue responds.</p>
+<div class="cards">
+<div class="info-card"><h3>01 · Computational Weight</h3><p>Different operations consume different amounts of gas. A simple ETH transfer commonly uses 21,000 gas units, while complex smart-contract execution can consume much more.</p></div>
+<div class="info-card"><h3>02 · The Mempool</h3><p>The mempool is a temporary waiting area for pending transactions. Validators or block builders choose eligible transactions while respecting block gas limits and other constraints.</p></div>
+<div class="info-card"><h3>03 · Supply & Demand</h3><p>Block space is limited. When demand rises, users may offer a higher priority fee to improve the chance of earlier inclusion. A higher tip does not guarantee inclusion.</p></div>
+</div>
+</section>
+
+<section class="section"><h2>Priority auction: transaction selection</h2><p class="section-intro">Live queue snapshot: pending transactions are ranked by priority tip, and the next-block group follows the capacity shown in the simulator. Real Ethereum block building also considers effective priority fee, transaction validity, gas limits, profitability, and builder policies.</p>
+<div class="table-wrap"><table><thead><tr><th>Transaction</th><th>Operation</th><th>Gas Used (example)</th><th>Priority Tip</th><th>Queue Status</th></tr></thead><tbody id="queueRows"></tbody></table></div>
+</section>
+
+<section class="section"><h2>Priority auction simulation flow</h2><p class="section-intro">Follow the path from transaction submission to block inclusion.</p>
+<div class="flow">
+<div class="flow-step"><b>STEP 1 · BROADCAST</b><span>Users sign and broadcast transactions with a gas limit, max fee, and priority tip.</span></div>
+<div class="flow-step"><b>STEP 2 · MEMPOOL</b><span>Pending transactions wait while nodes check validity and maintain their transaction pools.</span></div>
+<div class="flow-step"><b>STEP 3 · SELECTION</b><span>Block builders select transactions, considering effective tips, gas usage, and block capacity.</span></div>
+<div class="flow-step"><b>STEP 4 · CONFIRMATION</b><span>Selected transactions are included in a block and executed by the network.</span></div>
+</div>
+</section>
+
+<section class="section"><h2>Understanding the fee calculation</h2><p class="section-intro">For an EIP-1559 transaction, the effective gas price is based on the base fee and the effective priority fee, capped by the sender's max fee.</p>
+<div class="formula">Transaction fee = Gas used × Effective gas price<br>Effective gas price = Base fee + Effective priority fee</div>
+<div class="cards" style="margin-top:14px">
+<div class="info-card"><h3>Base Fee</h3><p>A protocol-determined fee per gas unit that adjusts according to recent block demand. The base fee is burned on Ethereum mainnet.</p></div>
+<div class="info-card"><h3>Priority Fee (Tip)</h3><p>An optional incentive paid to the block proposer or builder path to encourage transaction inclusion. Higher tips can improve priority during busy periods.</p></div>
+<div class="info-card"><h3>Gas Limit</h3><p>The maximum amount of computation a transaction is allowed to use. Actual gas used determines the execution fee; unused gas is not charged as used computation.</p></div>
+</div>
+</section>
+<footer>EDUCATIONAL REFERENCE ARCHITECTURE SIMULATOR · ANTIGRAVITY CONSENSUS LAB</footer>
+</div>
+<script src="app_gas_fees.js"></script>
+</body></html>

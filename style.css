@@ -2254,8 +2254,13 @@ body {
   }
 }
 
+<<<<<<< HEAD
 /* Topic 7: PoW vs PoS Consensus Stage Styles (Matched to Screenshots 1 - 4) */
 .pow-pos-stage-panel {
+=======
+/* Topic 8: Smart Contract State Machine Styles (Matched to Screenshots 1, 2, 3) */
+.contract-stage-panel {
+>>>>>>> 891af91 (topic 8 added)
   padding: 24px;
   background: #0d111d;
   border: 1px solid var(--border-color);
@@ -2265,6 +2270,7 @@ body {
   gap: 20px;
 }
 
+<<<<<<< HEAD
 .consensus-canvas-stage {
   position: relative;
   background: #080c16;
@@ -2354,6 +2360,305 @@ body {
 
 /* Consensus Controls Dashboard */
 .consensus-controls-dashboard {
+=======
+.contract-visualizer-stage {
+  position: relative;
+  height: 280px;
+  background: #080c16;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 80px;
+  overflow: hidden;
+  /* Grid dots background matching screenshot */
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Tenant Avatar Node (Left) */
+.escrow-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+}
+
+.tenant-avatar-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #2563eb;
+  border: 3px solid #3b82f6;
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.node-floating-badge {
+  position: absolute;
+  top: -12px;
+  background: #111827;
+  border: 1px solid #1f293d;
+  color: #38bdf8;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* Contract Machine Card (Center) */
+.contract-machine-card {
+  width: 170px;
+  height: 140px;
+  background: #131a29;
+  border: 2px solid #1e293b;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 10px;
+  position: relative;
+  z-index: 3;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.contract-machine-card.state-verified {
+  border-color: #22c55e;
+  box-shadow: 0 0 25px rgba(34, 197, 94, 0.35);
+  background: #0f1c1d;
+}
+
+.contract-machine-card.state-partial {
+  border-color: #3b82f6;
+}
+
+.contract-top-badge {
+  position: absolute;
+  top: -12px;
+  right: 10px;
+  background: #1e131d;
+  border: 1px solid #7f1d1d;
+  color: #f87171;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* Schematic code lines */
+.code-lines-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 90%;
+  margin-top: 4px;
+}
+
+.code-line {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.line-red { background: #f87171; width: 45%; }
+.line-blue { background: #38bdf8; width: 75%; }
+.line-amber { background: #fbbf24; width: 90%; }
+
+/* Status Circle (Lock vs Checkmark) */
+.contract-status-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #1e293b;
+  border: 2px solid #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  transition: all 0.3s;
+}
+
+.circle-verified {
+  background: #15803d;
+  border-color: #22c55e;
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.5);
+}
+
+/* Deposit Progress Badge */
+.deposit-progress-badge {
+  width: 95%;
+  background: #090e17;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 4px 6px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.deposit-progress-text {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #cbd5e1;
+  position: relative;
+  z-index: 2;
+}
+
+.text-gold {
+  color: #fef08a;
+  text-shadow: 0 0 6px rgba(251, 191, 36, 0.5);
+}
+
+.deposit-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #d97706, #fbbf24);
+  transition: width 0.3s ease;
+  z-index: 1;
+  opacity: 0.75;
+}
+
+.badge-locked-gold {
+  background: #b45309;
+  border-color: #f59e0b;
+}
+
+.badge-locked-gold .deposit-bar-fill {
+  background: #d97706;
+}
+
+/* Apartment Node (Right) */
+.property-avatar-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #15803d;
+  border: 3px solid #16a34a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: all 0.3s;
+}
+
+.circle-active-green {
+  background: #16a34a;
+  border-color: #22c55e;
+  box-shadow: 0 0 24px rgba(34, 197, 94, 0.5);
+}
+
+#accessBadge {
+  color: #34d399;
+}
+
+/* Floating Golden Key Token */
+.floating-key-token {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #b45309;
+  border: 1.5px solid #fbbf24;
+  color: #fef08a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 4;
+}
+
+.floating-key-token.key-unlocked {
+  transform: translate(6px, -6px) scale(1.15);
+  background: #f59e0b;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.8);
+}
+
+/* Wire Connectors with Traveling Flow Arrows */
+.contract-wire {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  background: #1e293b;
+  z-index: 1;
+}
+
+.wire-tenant-to-contract {
+  left: 150px;
+  width: calc(50% - 235px);
+}
+
+.wire-contract-to-prop {
+  left: calc(50% + 85px);
+  width: calc(50% - 235px);
+}
+
+.wire-tenant-to-contract.active-blue {
+  background: repeating-linear-gradient(90deg, #38bdf8 0, #38bdf8 8px, transparent 8px, transparent 16px);
+  animation: flowWire 0.8s linear infinite;
+}
+
+.wire-contract-to-prop.active-green {
+  background: repeating-linear-gradient(90deg, #22c55e 0, #22c55e 8px, transparent 8px, transparent 16px);
+  animation: flowWire 0.8s linear infinite;
+}
+
+@keyframes flowWire {
+  from { background-position: 0 0; }
+  to { background-position: 32px 0; }
+}
+
+/* Contract Telemetry Strip */
+.contract-telemetry-strip {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 16px 24px;
+  background: #111624;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+.ctele-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.ctele-sub {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.ctele-val {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+}
+
+.text-yellow { color: #fbbf24; }
+.text-green { color: #22c55e; }
+
+/* Scenario Controls Dashboard */
+.contract-controls-dashboard {
+>>>>>>> 891af91 (topic 8 added)
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -2363,6 +2668,7 @@ body {
   border-radius: 12px;
 }
 
+<<<<<<< HEAD
 .control-box-full {
   display: flex;
   flex-direction: column;
@@ -2370,11 +2676,15 @@ body {
 }
 
 .control-box-full label {
+=======
+.control-section-title {
+>>>>>>> 891af91 (topic 8 added)
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--text-muted);
 }
 
+<<<<<<< HEAD
 .mode-toggle-pill-wrap {
   display: flex;
   background: #111827;
@@ -2401,4 +2711,56 @@ body {
   background: #2563eb;
   color: #fff;
   box-shadow: 0 2px 12px rgba(37, 99, 235, 0.4);
+=======
+.scenario-buttons-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-scenario {
+  flex: 1;
+  background: #162032;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-scenario:hover {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.btn-scenario.active {
+  background: #2563eb;
+  border-color: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 2px 14px rgba(37, 99, 235, 0.4);
+}
+
+.slider-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+@media (max-width: 900px) {
+  .contract-visualizer-stage {
+    padding: 0 20px;
+  }
+  .wire-tenant-to-contract,
+  .wire-contract-to-prop {
+    display: none;
+  }
+  .scenario-buttons-row {
+    flex-direction: column;
+  }
+>>>>>>> 891af91 (topic 8 added)
 }

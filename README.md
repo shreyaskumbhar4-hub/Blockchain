@@ -1,6 +1,10 @@
 # Blockchain & Consensus Architecture Academy
 
+<<<<<<< HEAD
 An interactive web simulation lab and educational platform comparing **Centralized Systems (Star Topology)** and **Decentralized Systems (Peer Equivalence Mesh)** under intervention (freeze attempts), cryptographic block linking, SHA-256 Avalanche Effect, Asymmetric Keypair Cryptography, Public vs. Private Enterprise Blockchains, and **Proof of Work (PoW) vs. Proof of Stake (PoS) Consensus Mechanics**.
+=======
+An interactive web simulation lab and educational platform comparing **Centralized Systems (Star Topology)** and **Decentralized Systems (Peer Equivalence Mesh)** under intervention (freeze attempts), cryptographic block linking, SHA-256 Avalanche Effect, Asymmetric Keypair Cryptography, Public vs. Private Enterprise Blockchains, and **Smart Contracts & Programmable Escrow State Machines**.
+>>>>>>> 891af91 (topic 8 added)
 
 ---
 
@@ -15,7 +19,11 @@ An interactive web simulation lab and educational platform comparing **Centraliz
 | [`topic4-avalanche-effect.html`](file:///c:/Users/a/Desktop/project%20folder/blockchain/topic4-avalanche-effect.html) | **Topic 4: The Avalanche Effect & One-Way Hashing** | Real-time 256-bit mutation map, dual-input live comparison playground, and Avalanche Flow canvas diagram. |
 | [`topic5-asymmetric-cryptography.html`](file:///c:/Users/a/Desktop/project%20folder/blockchain/topic5-asymmetric-cryptography.html) | **Topic 5: Asymmetric Keys & Digital Signatures** | Interactive visualization of inbound deposit routing (`Receive`) vs outbound ECDSA signing (`Spend`). |
 | [`topic6-public-vs-private.html`](file:///c:/Users/a/Desktop/project%20folder/blockchain/topic6-public-vs-private.html) | **Topic 6: Public vs. Private Blockchain Architecture** | Live canvas modeling **Global Broadcast (Sybil Attack)** vs. **Permissioned Gatekeeper (Blocked Intrusions)**. |
+<<<<<<< HEAD
 | [`topic7-pow-vs-pos.html`](file:///c:/Users/a/Desktop/project%20folder/blockchain/topic7-pow-vs-pos.html) | **Topic 7: Proof of Work vs. Proof of Stake** | Interactive simulator of **PoW Hash Racing (MH/s with difficulty slider)** vs. **PoS Slot Election Radar (Whale vs Balanced Stake)**. |
+=======
+| [`topic7-smart-contracts.html`](file:///c:/Users/a/Desktop/project%20folder/blockchain/topic7-smart-contracts.html) | **Topic 7: Smart Contracts & Programmable Escrow** | Interactive apartment rental escrow state machine modeling **Zero Balance**, **Partial Deposit (48%)**, and **Full Target (2.5 ETH) with automatic digital key release**. |
+>>>>>>> 891af91 (topic 8 added)
 
 ---
 
