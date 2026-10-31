@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 7: Smart Contracts & Programmable Escrow State Machine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="smart-contract-page">
+  <div class="app-container">
+    <!-- Navigation Bar -->
+    <nav class="site-nav">
+      <div class="nav-brand">
+        <span class="pulse-dot"></span>
+        <span class="brand-title">BLOCKCHAIN LAB</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="topic1-intervention-simulation.html" class="nav-link">Topic 1: Intervention Simulator</a>
+        <a href="topic2-chain-integrity.html" class="nav-link">Topic 2: Chain Linkage & Tampering</a>
+        <a href="topic3-architectural-guide.html" class="nav-link">Topic 3: Architectural Reference</a>
+        <a href="topic4-avalanche-effect.html" class="nav-link">Topic 4: Avalanche Effect Lab</a>
+        <a href="topic5-asymmetric-cryptography.html" class="nav-link">Topic 5: Asymmetric Keys & Signing</a>
+        <a href="topic6-public-vs-private.html" class="nav-link">Topic 6: Public vs Private Chains</a>
+        <a href="topic7-smart-contracts.html" class="nav-link active">Topic 7: Smart Contracts</a>
+        <a href="topic8-pow-vs-pos.html" class="nav-link">Topic 8: PoW vs PoS</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-badge">
+          <span class="pulse-dot"></span>
+          <span>TOPIC 07: PROGRAMMABLE STATE MACHINE & ESCROW</span>
+        </div>
+        <h1>Smart Contract State Machine & Automated Escrow</h1>
+        <p class="subtitle">Interactive simulation modeling decentralized rental settlement, conditional gates, and autonomous asset swap</p>
+      </div>
+      <div class="header-controls">
+        <a href="topic6-public-vs-private.html" class="btn btn-outline">← Back to Topic 6</a>
+        <a href="topic3-architectural-guide.html" class="btn btn-primary">Reference Guide →</a>
+      </div>
+    </header>
+
+    <!-- Interactive Simulator Stage (Matching Screenshots 1, 2, 3) -->
+    <section class="sim-panel full-width-panel contract-stage-panel">
+      <!-- Visual Canvas / Node Stage -->
+      <div class="contract-visualizer-stage" id="contractStage">
+        <!-- 1. Tenant Wallet Node (Left) -->
+        <div class="escrow-node tenant-node" id="tenantNode">
+          <div class="tenant-avatar-circle">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+          </div>
+          <span class="node-floating-badge" id="tenantBadge">Tenant Wallet</span>
+        </div>
+
+        <!-- Flow Line 1: Tenant to Contract (Deposit transfer) -->
+        <div class="contract-wire wire-tenant-to-contract" id="wireDeposit">
+          <div class="wire-flow-arrow" id="flowArrowDeposit"></div>
+        </div>
+
+        <!-- 2. Smart Contract Code Box (Center Escrow State Machine) -->
+        <div class="contract-machine-card" id="contractCard">
+          <span class="contract-top-badge">Smart Contract Code</span>
+          <!-- Code schematic bars -->
+          <div class="code-lines-visual">
+            <div class="code-line line-red"></div>
+            <div class="code-line line-blue"></div>
+            <div class="code-line line-amber"></div>
+          </div>
+
+          <!-- Central Lock / Check Icon -->
+          <div class="contract-status-circle" id="contractStatusCircle">
+            <!-- Dynamic Lock vs Checkmark SVG -->
+            <svg id="contractLockIcon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+            </svg>
+          </div>
+
+          <!-- Deposit Progress Bar / Badge -->
+          <div class="deposit-progress-badge" id="depositProgressBadge">
+            <span class="deposit-progress-text" id="dispDepositRatio">DEPOSIT: 0.0 / 2.5 ETH</span>
+            <div class="deposit-bar-fill" id="depositBarFill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Flow Line 2: Contract to Apartment Key (Unlock release) -->
+        <div class="contract-wire wire-contract-to-prop" id="wireKey">
+          <div class="wire-flow-arrow" id="flowArrowKey"></div>
+        </div>
+
+        <!-- 3. Apartment / Digital Access Token Node (Right) -->
+        <div class="escrow-node property-node" id="propertyNode">
+          <!-- Floating Key Token Icon -->
+          <div class="floating-key-token" id="floatingKeyToken" title="Digital Apartment Key NFT / Token">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 14c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5c0 .88-.23 1.7-.63 2.41L15.59 15H18v2h2v2h2v3h-3.41l-8.18-8.18c-.71.4-1.53.63-2.41.63zM7 6c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            </svg>
+          </div>
+          <!-- Apartment House Icon -->
+          <div class="property-avatar-circle" id="propertyCircle">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+          </div>
+          <span class="node-floating-badge" id="accessBadge">Digital Access</span>
+        </div>
+      </div>
+
+      <!-- Real-Time Telemetry Metrics Strip (Matching Screenshots 1, 2, 3) -->
+      <div class="contract-telemetry-strip">
+        <div class="ctele-col">
+          <span class="ctele-sub">Deposit Placed</span>
+          <span class="ctele-val text-white" id="statDepositPlaced">0.00 ETH</span>
+        </div>
+        <div class="ctele-col">
+          <span class="ctele-sub">Condition Status</span>
+          <span class="ctele-val text-yellow" id="statConditionStatus">0% Funded</span>
+        </div>
+        <div class="ctele-col">
+          <span class="ctele-sub">Key Release</span>
+          <span class="ctele-val text-light" id="statKeyRelease">PENDING DEPOSIT</span>
+        </div>
+      </div>
+
+      <!-- Scenario Control Buttons & Deposit Slider (Matching Screenshots 1, 2, 3) -->
+      <div class="contract-controls-dashboard">
+        <label class="control-section-title">Simulate Scenarios</label>
+        <div class="scenario-buttons-row">
+          <button class="btn-scenario active" id="btnScenarioZero">Zero Balance</button>
+          <button class="btn-scenario" id="btnScenarioPartial">Partial Deposit</button>
+          <button class="btn-scenario" id="btnScenarioFull">Full Target (2.5)</button>
+        </div>
+
+        <!-- Slider for manual continuous testing -->
+        <div class="slider-control-group">
+          <div class="slider-label-row">
+            <label for="depositRangeSlider">Adjust Cryptocurrency Deposit Amount Manually</label>
+            <span class="slider-readout" id="lblDepositSlider">0.0 ETH</span>
+          </div>
+          <input type="range" id="depositRangeSlider" min="0" max="2.5" step="0.1" value="0" class="range-slider">
+        </div>
+      </div>
+    </section>
+
+    <!-- Deep-Dive Comparison & Programmable Logic Matrix -->
+    <section class="educational-section">
+      <div class="section-title">
+        <h2>Operations Matrix: Traditional Legal Escrow vs. Smart Contracts</h2>
+        <p>How code replacing intermediaries eliminates human bias, delays, and counterparty default risks</p>
+      </div>
+
+      <div class="matrix-table-wrap">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Operational Layer</th>
+              <th class="col-cent">Traditional Legal Agreement</th>
+              <th class="col-dec">Blockchain Smart Contract</th>
+              <th>Architectural Principle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Enforcement Method</strong></td>
+              <td>Judicial court system / Legal lawsuits / Police orders</td>
+              <td><span class="tag tag-success">Cryptographic consensus</span> / Automated execution</td>
+              <td>Subjective Interpretation vs Deterministic Math</td>
+            </tr>
+            <tr>
+              <td><strong>Intermediary Required</strong></td>
+              <td>Escrow agents, attorneys, title companies, or brokers</td>
+              <td><span class="tag tag-success">None</span> (Programmatic peer-to-peer code escrow)</td>
+              <td>Rent-Seeking Third Party vs Sovereign Peer Escrow</td>
+            </tr>
+            <tr>
+              <td><strong>Execution Speed</strong></td>
+              <td>Days to weeks (Manual bank transfers, wire clearing, paperwork)</td>
+              <td><span class="tag tag-success">Instantaneous</span> (Triggered within block confirmation)</td>
+              <td>Human Latency vs Distributed Virtual Machine (EVM)</td>
+            </tr>
+            <tr>
+              <td><strong>Cost Basis</strong></td>
+              <td>High legal retainers, notary costs, processing fees (2–5%)</td>
+              <td>Minimal network gas transaction fees</td>
+              <td>Overhead Friction vs Computational Efficiency</td>
+            </tr>
+            <tr>
+              <td><strong>Asset Custody</strong></td>
+              <td>Bank escrow account (Subject to freezing, bankruptcy, or fraud)</td>
+              <td>Self-custody immutable contract address</td>
+              <td>Counterparty Risk vs Cryptographic Guarantee</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Execution Pipeline Breakdown & Solidity Snippet -->
+      <div class="trilemma-grid" style="margin-top: 24px;">
+        <div class="trilemma-card">
+          <h4>Phase 1: Contract State Initialization</h4>
+          <p>
+            The landlord deploys the contract onto Ethereum specifying rental parameters: required deposit (<code>2.5 ETH</code>), rental duration, and the digital apartment access token ID. Initial state: <code>Awaiting Deposit</code>.
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>Phase 2: Conditional Input Gate</h4>
+          <p>
+            The tenant triggers <code>deposit()</code>. Operating on strict Boolean logic:
+            <code>IF (msg.value < 2.5 ether)</code> $\rightarrow$ Transaction reverts, deposit refunded.
+            <code>IF (msg.value == 2.5 ether)</code> $\rightarrow$ State transitions to <code>100% Verified</code>.
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>Phase 3: Atomic Settlement Execution</h4>
+          <p>
+            Within the exact same transaction block: the locked funds route directly to the Landlord's wallet, while the smart lock IoT access token is minted/transferred directly to the Tenant's wallet. Zero chance of one party defaulting!
+          </p>
+        </div>
+
+        <div class="trilemma-card">
+          <h4>Blockchain Oracles & Off-Chain Feeds</h4>
+          <p>
+            Because blockchains cannot query external APIs directly (the Oracle Problem), decentralized networks like <strong>Chainlink</strong> feed real-world verified data (smart lock IoT status, weather, flight schedules) into the contract to trigger settlements.
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive Solidity Code Example -->
+      <div style="margin-top: 24px;">
+        <div class="code-box">
+          <h4>Production Solidity Implementation (RentalEscrow.sol)</h4>
+          <pre><code><span class="comment">// SPDX-License-Identifier: MIT</span>
+<span class="keyword">pragma solidity</span> ^0.8.20;
+
+<span class="keyword">contract</span> RentalEscrow {
+    <span class="keyword">address payable public</span> landlord;
+    <span class="keyword">address public</span> tenant;
+    <span class="keyword">uint256 public constant</span> REQUIRED_DEPOSIT = 2.5 <span class="keyword">ether</span>;
+    <span class="keyword">bool public</span> keyReleased;
+
+    <span class="keyword">event</span> <span class="function">DepositReceived</span>(address indexed tenant, uint256 amount);
+    <span class="keyword">event</span> <span class="function">EscrowSettled</span>(address indexed landlord, address indexed tenant);
+
+    <span class="keyword">constructor</span>(address _tenant) {
+        landlord = <span class="keyword">payable</span>(msg.sender);
+        tenant = _tenant;
+    }
+
+    <span class="comment">// Atomic conditional settlement: Cannot cheat or withhold key</span>
+    <span class="keyword">function</span> <span class="function">deposit</span>() <span class="keyword">external payable</span> {
+        <span class="keyword">require</span>(msg.sender == tenant, <span class="string">"Only tenant can fund"</span>);
+        <span class="keyword">require</span>(msg.value == REQUIRED_DEPOSIT, <span class="string">"Exact 2.5 ETH required"</span>);
+        <span class="keyword">require</span>(!keyReleased, <span class="string">"Already fulfilled"</span>);
+
+        keyReleased = <span class="keyword">true</span>;
+        
+        <span class="comment">// 1. Release payment directly to landlord</span>
+        landlord.transfer(msg.value);
+
+        <span class="comment">// 2. Digital key authorization minted to tenant</span>
+        <span class="keyword">emit</span> <span class="function">EscrowSettled</span>(landlord, tenant);
+    }
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <p>Educational Reference Architecture Simulator • Antigravity Consensus Lab</p>
+    </footer>
+  </div>
+
+  <script src="app_smart_contracts.js"></script>
+</body>
+</html>
