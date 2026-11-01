@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg-primary: #0a0e17;
   --bg-secondary: #111827;
   --bg-card: #162032;
@@ -2254,13 +2254,9 @@ body {
   }
 }
 
-<<<<<<< HEAD
-/* Topic 7: PoW vs PoS Consensus Stage Styles (Matched to Screenshots 1 - 4) */
-.pow-pos-stage-panel {
-=======
-/* Topic 8: Smart Contract State Machine Styles (Matched to Screenshots 1, 2, 3) */
+/* Topic 7 / 8 advanced stage styles */
+.pow-pos-stage-panel,
 .contract-stage-panel {
->>>>>>> 891af91 (topic 8 added)
   padding: 24px;
   background: #0d111d;
   border: 1px solid var(--border-color);
@@ -2270,8 +2266,8 @@ body {
   gap: 20px;
 }
 
-<<<<<<< HEAD
-.consensus-canvas-stage {
+.consensus-canvas-stage,
+.contract-visualizer-stage {
   position: relative;
   background: #080c16;
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -2358,21 +2354,24 @@ body {
 .dot-gamma { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
 .dot-delta { background: #10b981; box-shadow: 0 0 6px #10b981; }
 
-/* Consensus Controls Dashboard */
-.consensus-controls-dashboard {
-=======
-.contract-visualizer-stage {
-  position: relative;
-  height: 280px;
-  background: #080c16;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+/* Consensus / scenario controls dashboard */
+.consensus-controls-dashboard,
+.contract-controls-dashboard {
   display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 24px;
+  background: #090d17;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.contract-visualizer-stage {
+  height: 280px;
+  min-height: 0;
   align-items: center;
   justify-content: space-between;
   padding: 0 80px;
-  overflow: hidden;
-  /* Grid dots background matching screenshot */
   background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 32px 32px;
 }
@@ -2658,7 +2657,6 @@ body {
 
 /* Scenario Controls Dashboard */
 .contract-controls-dashboard {
->>>>>>> 891af91 (topic 8 added)
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -2668,23 +2666,19 @@ body {
   border-radius: 12px;
 }
 
-<<<<<<< HEAD
 .control-box-full {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.control-box-full label {
-=======
+.control-box-full label,
 .control-section-title {
->>>>>>> 891af91 (topic 8 added)
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--text-muted);
 }
 
-<<<<<<< HEAD
 .mode-toggle-pill-wrap {
   display: flex;
   background: #111827;
@@ -2711,7 +2705,8 @@ body {
   background: #2563eb;
   color: #fff;
   box-shadow: 0 2px 12px rgba(37, 99, 235, 0.4);
-=======
+}
+
 .scenario-buttons-row {
   display: flex;
   gap: 12px;
@@ -2762,5 +2757,4 @@ body {
   .scenario-buttons-row {
     flex-direction: column;
   }
->>>>>>> 891af91 (topic 8 added)
 }
